@@ -22,16 +22,11 @@ public class Ganho {
     @Column(name = "ganho_vida")
     private Double vida;
 
-    // Adicionado o campo STATUS para o Apagado Lógico
-    @Column(name = "ganho_status")
-    private Integer status;
 
-    // Relacionamento ManyToOne com Personagem (Personagem.id é Integer)
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "personagem_id", nullable = false)
     private Personagem personagem;
 
-    // --- Getters e Setters ---
 
     public Integer getId() { return id; }
     public void setId(Integer id) { this.id = id; }
@@ -43,8 +38,6 @@ public class Ganho {
     public void setNivel(Integer nivel) { this.nivel = nivel; }
     public Double getVida() { return vida; }
     public void setVida(Double vida) { this.vida = vida; }
-    public Integer getStatus() { return status; }
-    public void setStatus(Integer status) { this.status = status; }
     public Personagem getPersonagem() { return personagem; }
     public void setPersonagem(Personagem personagem) { this.personagem = personagem; }
 }

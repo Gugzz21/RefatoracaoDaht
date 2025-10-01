@@ -8,32 +8,25 @@ import java.time.LocalDate;
 
 public class MissaoDTORequest {
 
-    @NotBlank
+
     private String descricao;
 
-    @NotNull
-    @PositiveOrZero
-    private int repeticao; // TINYINT
 
-    @NotNull
-    @PositiveOrZero
+    private int repeticao;
+
+
     private Integer dificuldade;
 
-    @NotNull // Efeito da Missão
+
     private Integer efeito;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate dataFinalizacao;
 
-    @NotNull
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate dataInicio;
 
-    @NotNull
+
     private Integer status;
 
-    // ID do Personagem ao qual esta missão será ligada (FK)
-    @NotNull
     private Long personagemId;
 
     // Getters e Setters

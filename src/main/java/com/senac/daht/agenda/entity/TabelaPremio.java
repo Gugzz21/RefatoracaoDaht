@@ -10,21 +10,19 @@ public class TabelaPremio {
     @Column(name = "tabelapremio_id")
     private Integer id;
 
-    // CAMPO DE CONTROLE PARA APAGADO LÓGICO
-    @Column(name = "status_controle")
-    private Integer status; // Integer para a JPQL
+    @Column(name = "tabelapremio_status")
+    private Integer status;
 
-    // Relacionamento ManyToOne com Personagem (FK: Integer)
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "personagem_id", nullable = false)
     private Personagem personagem;
 
-    // Relacionamento ManyToOne com Premio (FK: Integer)
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "premio_id", nullable = false)
     private Premio premio;
 
-    // Getters e Setters
+
     public Integer getId() { return id; }
     public void setId(Integer id) { this.id = id; }
     public Integer getStatus() { return status; }

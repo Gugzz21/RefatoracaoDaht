@@ -8,24 +8,19 @@ import java.sql.Date;
 import java.time.LocalDate;
 
 public class UsuarioDTORequest {
-    @NotBlank
+
     private String nome;
 
-    @Email
-    @NotBlank
+
     private String email;
 
     private String telefone; // Telefone não precisa de @NotBlank se for opcional
 
-    @NotNull
-    @Past
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate dataNascimento;
 
-    @NotBlank
+
     private String senha;
 
-    @NotNull
     private Integer status;
 
     // Getters e Setters

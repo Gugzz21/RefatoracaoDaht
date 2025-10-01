@@ -26,7 +26,7 @@ public class GanhoService {
         this.personagemRepository = personagemRepository;
     }
 
-    // Método Privado: Converte Entity -> DTO Response
+
     private GanhoDTOResponse convertToDto(Ganho ganho) {
         GanhoDTOResponse response = new GanhoDTOResponse();
         response.setId(ganho.getId());
@@ -34,29 +34,28 @@ public class GanhoService {
         response.setXp(ganho.getXp());
         response.setNivel(ganho.getNivel());
         response.setVida(ganho.getVida());
-        response.setStatus(ganho.getStatus());
+
         if (ganho.getPersonagem() != null) {
-            response.setPersonagemId(ganho.getPersonagem().getId()); // Ambos são Integer
+            response.setPersonagemId(ganho.getPersonagem().getId());
         }
         return response;
     }
 
-    // Método Privado: Converte DTO Request -> Entity
     private Ganho convertToEntity(GanhoDTORequest request) {
         Ganho ganho = new Ganho();
         ganho.setOuro(request.getOuro());
         ganho.setXp(request.getXp());
         ganho.setNivel(request.getNivel());
         ganho.setVida(request.getVida());
-        ganho.setStatus(request.getStatus());
+
         return ganho;
     }
 
-    // --- Métodos CRUD com Apagado Lógico ---
+
 
     @Transactional
     public GanhoDTOResponse criarGanho(GanhoDTORequest request) {
-        // Busca Personagem ativo (Personagem.id é Integer)
+
         Personagem personagem = personagemRepository.findById(request.getPersonagemId())
                 .orElseThrow(() -> new EntityNotFoundException("Personagem ativo com ID " + request.getPersonagemId() + " não encontrado."));
 
@@ -69,38 +68,39 @@ public class GanhoService {
 
     @Transactional(readOnly = true)
     public List<GanhoDTOResponse> listarGanhos() {
-        return ganhoRepository.listarAtivos().stream()
+
+        return ganhoRepository.findAll().stream()
                 .map(this::convertToDto)
                 .collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true)
     public GanhoDTOResponse listarPorId(Integer id) {
-        // Usa o findById customizado (filtra status >= 0)
+
         Ganho ganho = ganhoRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Ganho ativo com ID " + id + " não encontrado."));
+                .orElseThrow(() -> new EntityNotFoundException("Ganho com ID " + id + " não encontrado."));
         return convertToDto(ganho);
     }
 
     @Transactional
     public GanhoDTOResponse atualizarGanho(Integer id, GanhoDTORequest request) {
-        // Usa o findById customizado (filtra status >= 0)
-        Ganho ganho = ganhoRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Ganho ativo com ID " + id + " não encontrado para atualização."));
 
-        // Se o Personagem for alterado (opcional)
+        Ganho ganho = ganhoRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Ganho com ID " + id + " não encontrado para atualização."));
+
+
         if (!ganho.getPersonagem().getId().equals(request.getPersonagemId())) {
             Personagem novoPersonagem = personagemRepository.findById(request.getPersonagemId())
                     .orElseThrow(() -> new EntityNotFoundException("Personagem ativo com ID " + request.getPersonagemId() + " não encontrado."));
             ganho.setPersonagem(novoPersonagem);
         }
 
-        // Aplica as atualizações do DTO
+
         ganho.setOuro(request.getOuro());
         ganho.setXp(request.getXp());
         ganho.setNivel(request.getNivel());
         ganho.setVida(request.getVida());
-        ganho.setStatus(request.getStatus());
+
 
         Ganho updatedGanho = ganhoRepository.save(ganho);
         return convertToDto(updatedGanho);
@@ -108,11 +108,11 @@ public class GanhoService {
 
     @Transactional
     public void deletarGanho(Integer id) {
-        // Busca ativa necessária para confirmar que o registro existe e não está 'apagado'
-        if (!ganhoRepository.findById(id).isPresent()) {
-            throw new EntityNotFoundException("Ganho ativo com ID " + id + " não encontrado para deleção lógica.");
+
+        if (!ganhoRepository.existsById(id)) {
+            throw new EntityNotFoundException("Ganho com ID " + id + " não encontrado para deleção.");
         }
-        // Usa o método apagarLogico
-        ganhoRepository.apagarLogico(id);
+
+        ganhoRepository.deleteById(id);
     }
 }

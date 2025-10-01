@@ -5,32 +5,25 @@ import jakarta.validation.constraints.PositiveOrZero;
 
 public class PersonagemDTORequest {
 
-    @NotBlank
+
     private String nickname;
 
-    @NotNull
+
     private Double vida;
 
-    @NotNull
-    @PositiveOrZero
+
     private Double ouro;
 
-    @NotNull
-    @PositiveOrZero
+
     private Double xp;
 
-    @NotNull
-    @PositiveOrZero
+
     private Integer nivel;
 
-    @NotNull
     private Integer status;
 
-    // ID do Usuário ao qual este personagem será ligado (FK)
-    @NotNull
     private Integer usuarioId;
 
-    // Getters e Setters
     public String getNickname() { return nickname; }
     public void setNickname(String nickname) { this.nickname = nickname; }
     public Double getVida() { return vida; }
