@@ -1,33 +1,37 @@
 package com.senac.daht.agenda.entity;
 
 import jakarta.persistence.*;
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "usuario")
 public class Usuario {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "usuario_id")
     private Integer id;
 
-    @Column(name = "usuario_nome")
+    @Column(name = "usuario_nome", length = 45)
     private String nome;
 
-    @Column(name = "usuario_email")
+    @Column(name = "usuario_email", length = 45, unique = true)
     private String email;
 
-    @Column(name = "usuario_telefone")
+    @Column(name = "usuario_telefone", length = 45)
     private String telefone;
 
     @Column(name = "usuario_datanascimento")
-    private String datanascimento;
+    private LocalDate dataNascimento; // Usando LocalDate
 
-    @Column(name = "usuario_senha")
+    @Column(name = "usuario_senha", length = 45)
     private String senha;
 
     @Column(name = "usuario_status")
     private Integer status;
+
+    // Relacionamento OneToOne com Personagem (Lado inverso: Personagem tem a FK)
+    @OneToOne(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private Personagem personagem;
 
     public Integer getId() {
         return id;
@@ -61,12 +65,12 @@ public class Usuario {
         this.telefone = telefone;
     }
 
-    public String getDatanascimento() {
-        return datanascimento;
+    public LocalDate getDataNascimento() {
+        return dataNascimento;
     }
 
-    public void setDatanascimento(String datanascimento) {
-        this.datanascimento = datanascimento;
+    public void setDataNascimento(LocalDate dataNascimento) {
+        this.dataNascimento = dataNascimento;
     }
 
     public String getSenha() {
@@ -83,5 +87,13 @@ public class Usuario {
 
     public void setStatus(Integer status) {
         this.status = status;
+    }
+
+    public Personagem getPersonagem() {
+        return personagem;
+    }
+
+    public void setPersonagem(Personagem personagem) {
+        this.personagem = personagem;
     }
 }
