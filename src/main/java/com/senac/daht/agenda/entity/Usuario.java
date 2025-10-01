@@ -2,6 +2,7 @@ package com.senac.daht.agenda.entity;
 
 import jakarta.persistence.*;
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 @Table(name = "usuario")
@@ -21,21 +22,22 @@ public class Usuario {
     private String telefone;
 
     @Column(name = "usuario_datanascimento")
-    private LocalDate dataNascimento; // Usando LocalDate
+    private LocalDate dataNascimento;
 
-    @Column(name = "usuario_senha", length = 45)
+    @Column(name = "usuario_senha", length = 60)
     private String senha;
 
     @Column(name = "usuario_status")
     private Integer status;
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+    @JoinTable(name = "usuario_role",
+            joinColumns = @JoinColumn(name = "usuario_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id"))
+    private List<Role> roles;
 
-    // Relacionamento OneToOne com Personagem (Lado inverso: Personagem tem a FK)
+
     @OneToOne(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private Personagem personagem;
-
-    public Integer getId() {
-        return id;
-    }
 
     public void setId(Integer id) {
         this.id = id;
@@ -73,14 +75,6 @@ public class Usuario {
         this.dataNascimento = dataNascimento;
     }
 
-    public String getSenha() {
-        return senha;
-    }
-
-    public void setSenha(String senha) {
-        this.senha = senha;
-    }
-
     public Integer getStatus() {
         return status;
     }
@@ -96,4 +90,11 @@ public class Usuario {
     public void setPersonagem(Personagem personagem) {
         this.personagem = personagem;
     }
+
+    public Integer getId() { return id; }
+    public String getSenha() { return senha; }
+    public void setSenha(String senha) { this.senha = senha; }
+
+    public List<Role> getRoles() { return roles; }
+    public void setRoles(List<Role> roles) { this.roles = roles; }
 }

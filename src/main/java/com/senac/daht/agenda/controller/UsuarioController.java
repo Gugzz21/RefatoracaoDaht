@@ -26,12 +26,14 @@ public class UsuarioController {
     @GetMapping("/listar")
     @Operation(summary = "Listar usuários ativos", description = "Retorna todos os registros de usuários que não foram deletados logicamente.")
     public ResponseEntity<List<UsuarioDTOResponse>> listarUsuarios() {
-        return ResponseEntity.ok(usuarioService.listarUsuarios());
+        // CORREÇÃO: Chamando o método 'listarAtivos()' do Service para sincronizar o código.
+        return ResponseEntity.ok(usuarioService.listarAtivos());
     }
 
     @GetMapping("/listarPorId/{id}")
     @Operation(summary = "Listar usuário ativo por ID", description = "Busca um usuário pelo seu ID, retornando apenas se estiver ativo.")
     public ResponseEntity<UsuarioDTOResponse> listarPorId(@PathVariable("id") Integer id) {
+        // Assume que listarPorId no Service já usa findById customizado para filtrar status
         UsuarioDTOResponse usuario = usuarioService.listarPorId(id);
         return ResponseEntity.ok(usuario);
     }
@@ -55,6 +57,7 @@ public class UsuarioController {
     @DeleteMapping("/deletar/{id}")
     @Operation(summary = "Deletar logicamente usuário", description = "Define o status do usuário como -1 (Apagado Lógico).")
     public ResponseEntity<Void> deletarUsuario(@PathVariable("id") Integer id) {
+        // Assume que deletarUsuario no Service chama apagarLogico()
         usuarioService.deletarUsuario(id);
         return ResponseEntity.noContent().build();
     }
