@@ -26,11 +26,9 @@ public class MissaoService {
         this.personagemRepository = personagemRepository;
     }
 
-    // --- Métodos CRUD com Mapeamento Direto ---
 
     @Transactional
     public MissaoDTOResponse criarMissao(MissaoDTORequest request) {
-        // 1. DTO Request -> Entity (Mapeamento Direto para Criação)
         Personagem personagem = personagemRepository.findById(request.getPersonagemId().intValue())
                 .orElseThrow(() -> new EntityNotFoundException("Personagem ativo com ID " + request.getPersonagemId() + " não encontrado."));
 
@@ -45,7 +43,6 @@ public class MissaoService {
 
         Missao savedMissao = missaoRepository.save(missao);
 
-        // 2. Entity -> DTO Response (Mapeamento Direto para Resposta)
         MissaoDTOResponse response = new MissaoDTOResponse();
         response.setId(savedMissao.getId());
         response.setDescricao(savedMissao.getDescricao());
@@ -64,7 +61,6 @@ public class MissaoService {
     @Transactional(readOnly = true)
     public List<MissaoDTOResponse> listarMissoes() {
         return missaoRepository.listarAtivos().stream()
-                // Mapeamento direto no Stream
                 .map(missao -> {
                     MissaoDTOResponse response = new MissaoDTOResponse();
                     response.setId(missao.getId());
@@ -86,8 +82,6 @@ public class MissaoService {
     public MissaoDTOResponse listarPorId(Integer id) {
         Missao missao = missaoRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Missão ativa com ID " + id + " não encontrada."));
-
-        // Entity -> DTO Response (Mapeamento Direto)
         MissaoDTOResponse response = new MissaoDTOResponse();
         response.setId(missao.getId());
         response.setDescricao(missao.getDescricao());
@@ -106,15 +100,11 @@ public class MissaoService {
     public MissaoDTOResponse atualizarMissao(Integer id, MissaoDTORequest request) {
         Missao missao = missaoRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Missão ativa com ID " + id + " não encontrada para atualização."));
-
-        // Se o Personagem for alterado (opcional)
         if (!missao.getPersonagem().getId().equals(request.getPersonagemId().intValue())) {
             Personagem novoPersonagem = personagemRepository.findById(request.getPersonagemId().intValue())
                     .orElseThrow(() -> new EntityNotFoundException("Personagem ativo com ID " + request.getPersonagemId() + " não encontrado."));
             missao.setPersonagem(novoPersonagem);
         }
-
-        // Aplica as atualizações do DTO na Entity (Mapeamento Direto)
         missao.setDescricao(request.getDescricao());
         missao.setRepeticao(request.getRepeticao());
         missao.setDificuldade(request.getDificuldade());
@@ -123,8 +113,6 @@ public class MissaoService {
         missao.setStatus(request.getStatus());
 
         Missao updatedMissao = missaoRepository.save(missao);
-
-        // Entity -> DTO Response (Mapeamento Direto para Resposta)
         MissaoDTOResponse response = new MissaoDTOResponse();
         response.setId(updatedMissao.getId());
         response.setDescricao(updatedMissao.getDescricao());

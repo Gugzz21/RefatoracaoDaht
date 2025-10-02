@@ -29,7 +29,6 @@ public class MissaoDTORequest {
 
     private Long personagemId;
 
-    // Getters e Setters
     public String getDescricao() { return descricao; }
     public void setDescricao(String descricao) { this.descricao = descricao; }
     public int getRepeticao() { return repeticao; }

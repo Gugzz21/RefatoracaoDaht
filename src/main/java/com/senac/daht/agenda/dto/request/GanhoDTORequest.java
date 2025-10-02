@@ -12,9 +12,8 @@ public class GanhoDTORequest {
     private Integer nivel;
 
     private Double vida;
-    private Integer personagemId; // Personagem.id é Integer
+    private Integer personagemId;
 
-    // Getters e Setters
     public Double getOuro() { return ouro; }
     public void setOuro(Double ouro) { this.ouro = ouro; }
     public Double getXp() { return xp; }

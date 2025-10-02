@@ -12,20 +12,15 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface PremioRepository extends JpaRepository<Premio, Integer> { // PK: Integer
-
-    // 1. Apagado Lógico (UPDATE status = -1)
-    // Usa o campo status que é Integer
+public interface PremioRepository extends JpaRepository<Premio, Integer> {
     @Modifying
     @Transactional
     @Query("UPDATE Premio p SET p.status = -1 WHERE p.id = :id")
     void apagarLogico(@Param("id") Integer id);
 
-    // 2. Listar Todos Ativos
     @Query("SELECT p FROM Premio p WHERE p.status >= 0")
     List<Premio> listarAtivos();
 
-    // 3. Buscar por ID Ativo (Sobrescreve findById com filtro de status)
     @Query("SELECT p FROM Premio p WHERE p.id = :id AND p.status >= 0")
     Optional<Premio> findById(@Param("id") Integer id);
 }

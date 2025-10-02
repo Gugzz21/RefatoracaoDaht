@@ -21,16 +21,12 @@ public class PremioService {
     public PremioService(PremioRepository premioRepository) {
         this.premioRepository = premioRepository;
     }
-
-    // --- Métodos de Conversão ---
     private PremioDTOResponse convertToDto(Premio premio) {
         PremioDTOResponse response = new PremioDTOResponse();
         response.setId(premio.getId());
         response.setNome(premio.getNome());
         response.setPreco(premio.getPreco());
         response.setStatus(premio.getStatus());
-        // Adicione o status se estiver no DTO Response
-        // response.setStatus(premio.getStatus());
         return response;
     }
 
@@ -42,7 +38,6 @@ public class PremioService {
         return premio;
     }
 
-    // --- Métodos CRUD com Apagado Lógico ---
 
     @Transactional
     public PremioDTOResponse criarPremio(PremioDTORequest request) {
@@ -53,14 +48,14 @@ public class PremioService {
 
     @Transactional(readOnly = true)
     public List<PremioDTOResponse> listarPremios() {
-        return premioRepository.listarAtivos().stream() // Usando o método customizado
+        return premioRepository.listarAtivos().stream()
                 .map(this::convertToDto)
                 .collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true)
     public PremioDTOResponse listarPorId(Integer id) {
-        Premio premio = premioRepository.findById(id) // Usando o findById customizado
+        Premio premio = premioRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Prêmio ativo com ID " + id + " não encontrado."));
         return convertToDto(premio);
     }
@@ -69,11 +64,9 @@ public class PremioService {
     public PremioDTOResponse atualizarPremio(Integer id, PremioDTORequest request) {
         Premio premio = premioRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Prêmio ativo com ID " + id + " não encontrado para atualização."));
-
-        // Aplica as atualizações do DTO
         premio.setNome(request.getNome());
         premio.setPreco(request.getPreco());
-        premio.setStatus(request.getStatus()); // Assumindo que status pode ser atualizado
+        premio.setStatus(request.getStatus());
 
         Premio updatedPremio = premioRepository.save(premio);
         return convertToDto(updatedPremio);

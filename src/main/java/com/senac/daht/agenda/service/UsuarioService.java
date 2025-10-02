@@ -25,7 +25,6 @@ public class UsuarioService {
         this.securityConfiguration = securityConfiguration;
     }
 
-    // --- Métodos de Conversão (Internos) ---
 
     private UsuarioDTOResponse convertToDto(Usuario usuario) {
         UsuarioDTOResponse response = new UsuarioDTOResponse();
@@ -49,21 +48,17 @@ public class UsuarioService {
         usuario.setTelefone(request.getTelefone());
         usuario.setDataNascimento(request.getDataNascimento());
 
-        // 1. Aplica HASH na senha usando o PasswordEncoder
         String senhaHash = securityConfiguration.passwordEncoder().encode(request.getSenha());
         usuario.setSenha(senhaHash);
 
-        // 2. Garante status = 0 se null
         usuario.setStatus(request.getStatus() != null ? request.getStatus() : 0);
 
         return usuario;
     }
 
-    // --- Métodos CRUD com Apagado Lógico ---
 
     @Transactional
     public UsuarioDTOResponse criarUsuario(UsuarioDTORequest request) {
-        // Verifica se o email (login) já existe
         if (usuarioRepository.findByEmail(request.getEmail()).isPresent()) {
             throw new RuntimeException("E-mail já cadastrado.");
         }
@@ -75,7 +70,6 @@ public class UsuarioService {
 
     @Transactional(readOnly = true)
     public List<UsuarioDTOResponse> listarAtivos() {
-        // Usa o listarAtivos() customizado do Repository
         return usuarioRepository.listarAtivos().stream()
                 .map(this::convertToDto)
                 .collect(Collectors.toList());
@@ -83,7 +77,6 @@ public class UsuarioService {
 
     @Transactional(readOnly = true)
     public UsuarioDTOResponse listarPorId(Integer id) {
-        // Usa o findById() customizado com filtro de status
         Usuario usuario = usuarioRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Usuário ativo com ID " + id + " não encontrado."));
         return convertToDto(usuario);
@@ -91,17 +84,12 @@ public class UsuarioService {
 
     @Transactional
     public UsuarioDTOResponse atualizarUsuario(Integer id, UsuarioDTORequest request) {
-        // Busca o usuário ativo
         Usuario usuario = usuarioRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Usuário ativo com ID " + id + " não encontrado para atualização."));
-
-        // Aplica as atualizações do DTO
         usuario.setNome(request.getNome());
         usuario.setEmail(request.getEmail());
         usuario.setTelefone(request.getTelefone());
         usuario.setDataNascimento(request.getDataNascimento());
-
-        // Atualiza a senha APENAS se uma nova for fornecida e faz o HASH
         if (request.getSenha() != null && !request.getSenha().isEmpty()) {
             String senhaHash = securityConfiguration.passwordEncoder().encode(request.getSenha());
             usuario.setSenha(senhaHash);
@@ -115,11 +103,9 @@ public class UsuarioService {
 
     @Transactional
     public void deletarUsuario(Integer id) {
-        // Verifica a existência do registro ativo (findById já faz a verificação)
         if (!usuarioRepository.findById(id).isPresent()) {
             throw new EntityNotFoundException("Usuário ativo com ID " + id + " não encontrado para deleção lógica.");
         }
-        // Usa o método apagarLogico()
         usuarioRepository.apagarLogico(id);
     }
 }

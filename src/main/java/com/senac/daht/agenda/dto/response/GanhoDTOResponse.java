@@ -6,9 +6,8 @@ public class GanhoDTOResponse {
     private Double xp;
     private Integer nivel;
     private Double vida;
-    private Integer personagemId; // Personagem.id é Integer
+    private Integer personagemId;
 
-    // Getters e Setters
     public Integer getId() { return id; }
     public void setId(Integer id) { this.id = id; }
     public Double getOuro() { return ouro; }

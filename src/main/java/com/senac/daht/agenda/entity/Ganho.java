@@ -8,7 +8,7 @@ public class Ganho {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ganho_id")
-    private Integer id; // Padronizado para Integer
+    private Integer id;
 
     @Column(name = "ganho_ouro")
     private Double ouro;

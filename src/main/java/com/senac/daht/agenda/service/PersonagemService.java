@@ -25,11 +25,9 @@ public class PersonagemService {
         this.personagemRepository = personagemRepository;
         this.usuarioRepository = usuarioRepository;
     }
-
-    // --- Métodos de Conversão ---
     private PersonagemDTOResponse convertToDto(Personagem personagem) {
         PersonagemDTOResponse response = new PersonagemDTOResponse();
-        response.setId(personagem.getId().longValue()); // Supondo que o DTO Response usa Long para o ID
+        response.setId(personagem.getId().longValue());
         response.setNickname(personagem.getNickname());
         response.setVida(personagem.getVida());
         response.setOuro(personagem.getOuro());
@@ -55,11 +53,9 @@ public class PersonagemService {
         return personagem;
     }
 
-    // --- Métodos CRUD com Apagado Lógico ---
 
     @Transactional
     public PersonagemDTOResponse criarPersonagem(PersonagemDTORequest request) {
-        // Usando o findById filtrado por status
         Usuario usuario = usuarioRepository.findById(request.getUsuarioId())
                 .orElseThrow(() -> new EntityNotFoundException("Usuário ativo com ID " + request.getUsuarioId() + " não encontrado."));
 
@@ -88,8 +84,6 @@ public class PersonagemService {
     public PersonagemDTOResponse atualizarPersonagem(Integer id, PersonagemDTORequest request) {
         Personagem personagem = personagemRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Personagem ativo com ID " + id + " não encontrado."));
-
-        // Aplica as atualizações do DTO
         personagem.setNickname(request.getNickname());
         personagem.setVida(request.getVida());
         personagem.setOuro(request.getOuro());
@@ -98,7 +92,6 @@ public class PersonagemService {
         personagem.setStatus(request.getStatus());
 
         if (request.getUsuarioId() != null && !personagem.getUsuario().getId().equals(request.getUsuarioId())) {
-            // Usando o findById filtrado por status
             Usuario usuario = usuarioRepository.findById(request.getUsuarioId())
                     .orElseThrow(() -> new EntityNotFoundException("Usuário ativo com ID " + request.getUsuarioId() + " não encontrado."));
             personagem.setUsuario(usuario);
@@ -110,7 +103,6 @@ public class PersonagemService {
 
     @Transactional
     public void deletarPersonagem(Integer id) {
-        // Não precisamos de existsById se findById já lança EntityNotFoundException
         if (!personagemRepository.findById(id).isPresent()) {
             throw new EntityNotFoundException("Personagem ativo com ID " + id + " não encontrado para deleção lógica.");
         }

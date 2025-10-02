@@ -10,7 +10,7 @@ public class Personagem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "personagem_id")
-    private Integer id; // Mantido Integer
+    private Integer id;
 
     @Column(name = "personagem_nickname", length = 30)
     private String nickname;
@@ -29,23 +29,13 @@ public class Personagem {
 
     @Column(name = "personagem_status")
     private Integer status;
-
-    // --- RELACIONAMENTOS ---
-
-    // 1. Relacionamento OneToOne com Usuário (Lado Proprietário: Personagem contém a FK)
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "usuario_id", referencedColumnName = "usuario_id", nullable = false)
     private Usuario usuario;
-
-    // 2. Relacionamento OneToMany com Ganho (1 Personagem tem N Ganhos)
     @OneToMany(mappedBy = "personagem", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Ganho> ganhos;
-
-    // 3. Relacionamento OneToMany com Missao (1 Personagem tem N Missões)
     @OneToMany(mappedBy = "personagem", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Missao> missoes;
-
-    // 4. Relacionamento OneToMany com TabelaPremio (Tabela de ligação N:M com Premio)
     @OneToMany(mappedBy = "personagem", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<TabelaPremio> premiosConquistados;
 

@@ -1,7 +1,6 @@
-package com.senac.daht.agenda.entity; // Novo pacote para Roles
-
+package com.senac.daht.agenda.entity;
 public enum RoleName {
-    ROLE_USER,             // Usuário padrão (para a gamificação)
-    ROLE_ADMINISTRATOR,    // Administrador do sistema
-    ROLE_GUEST             // Convidado/Acesso Limitado
+    ROLE_USER,
+    ROLE_ADMINISTRATOR,
+    ROLE_GUEST
 }

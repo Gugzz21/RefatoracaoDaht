@@ -29,12 +29,10 @@ public class TabelaPremioService {
         this.personagemRepository = personagemRepository;
         this.premioRepository = premioRepository;
     }
-
-    // --- Métodos de Conversão (mantidos) ---
     private TabelaPremioDTOResponse convertToDto(TabelaPremio tabelaPremio) {
         TabelaPremioDTOResponse response = new TabelaPremioDTOResponse();
         response.setId(tabelaPremio.getId());
-        response.setStatus(tabelaPremio.getStatus()); // Garante que o status seja incluído
+        response.setStatus(tabelaPremio.getStatus());
 
         if (tabelaPremio.getPersonagem() != null) {
             response.setPersonagemId(tabelaPremio.getPersonagem().getId());
@@ -48,29 +46,23 @@ public class TabelaPremioService {
         return response;
     }
 
-    // --- Métodos CRUD com Apagado Lógico ---
-
     @Transactional
     public TabelaPremioDTOResponse criarTabelaPremio(TabelaPremioDTORequest request) {
 
-        // 1. BUSCA DEPENDÊNCIAS (PERSONAGEM E PRÊMIO) - ESSENCIAL PARA RESOLVER O ERRO NOT NULL
         Personagem personagem = personagemRepository.findById(request.getPersonagemId())
                 .orElseThrow(() -> new EntityNotFoundException("Personagem ativo com ID " + request.getPersonagemId() + " não encontrado."));
 
         Premio premio = premioRepository.findById(request.getPremioId())
                 .orElseThrow(() -> new EntityNotFoundException("Prêmio ativo com ID " + request.getPremioId() + " não encontrado."));
 
-        // 2. CRIA E MAFPEIA A ENTIDADE
         TabelaPremio tabelaPremio = new TabelaPremio();
 
-        // CORREÇÃO DE FK: DEFINE AS DEPENDÊNCIAS DE OBJETO
-        tabelaPremio.setPersonagem(personagem); // <-- AGORA NÃO É NULL
-        tabelaPremio.setPremio(premio);         // <-- AGORA NÃO É NULL
+        tabelaPremio.setPersonagem(personagem);
+        tabelaPremio.setPremio(premio);
 
-        // CORREÇÃO DE STATUS: GARANTE STATUS = 0 (Ativo) para evitar NULL no BD
+
         tabelaPremio.setStatus(request.getStatus() != null ? request.getStatus() : 0);
 
-        // 3. SALVA
         TabelaPremio savedTabelaPremio = tabelaPremioRepository.save(tabelaPremio);
 
         return convertToDto(savedTabelaPremio);

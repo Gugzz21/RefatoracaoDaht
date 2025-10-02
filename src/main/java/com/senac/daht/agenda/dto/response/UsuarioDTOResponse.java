@@ -9,9 +9,8 @@ public class UsuarioDTOResponse {
     private String telefone;
     private LocalDate dataNascimento;
     private Integer status;
-    private Integer personagemId; // CORRIGIDO: Agora é Integer
+    private Integer personagemId;
 
-    // Getters e Setters
     public Integer getId() { return id; }
     public void setId(Integer id) { this.id = id; }
     public String getNome() { return nome; }
@@ -24,8 +23,6 @@ public class UsuarioDTOResponse {
     public void setDataNascimento(LocalDate dataNascimento) { this.dataNascimento = dataNascimento; }
     public Integer getStatus() { return status; }
     public void setStatus(Integer status) { this.status = status; }
-
-    // O tipo do Getter deve corresponder ao tipo do campo
     public Integer getPersonagemId() { return personagemId; }
     public void setPersonagemId(Integer personagemId) { this.personagemId = personagemId; }
 }

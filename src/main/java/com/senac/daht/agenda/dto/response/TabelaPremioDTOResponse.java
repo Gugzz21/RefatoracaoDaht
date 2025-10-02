@@ -8,7 +8,6 @@ public class TabelaPremioDTOResponse {
     private String nomePremio;
     private Integer status;
 
-    // Getters e Setters
     public Integer getId() { return id; }
     public void setId(Integer id) { this.id = id; }
     public Integer getPersonagemId() { return personagemId; }

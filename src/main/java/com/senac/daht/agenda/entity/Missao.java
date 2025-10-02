@@ -17,7 +17,7 @@ public class Missao {
     private String descricao;
 
     @Column(name = "missao_repeticao")
-    private Integer repeticao; // CORREÇÃO: De Byte para Integer
+    private Integer repeticao;
 
     @Column(name = "missao_dificuldade")
     private Integer dificuldade;
@@ -33,21 +33,18 @@ public class Missao {
 
     @Column(name = "missao_status")
     private Integer status;
-
-    // Relacionamento ManyToOne com Personagem (Chave Estrangeira aqui)
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "personagem_id", nullable = false)
     private Personagem personagem;
 
-    // --- Getters e Setters ---
 
     public Integer getId() { return id; }
     public void setId(Integer id) { this.id = id; }
     public String getDescricao() { return descricao; }
     public void setDescricao(String descricao) { this.descricao = descricao; }
 
-    public Integer getRepeticao() { return repeticao; } // Getter atualizado
-    public void setRepeticao(Integer repeticao) { this.repeticao = repeticao; } // Setter atualizado
+    public Integer getRepeticao() { return repeticao; }
+    public void setRepeticao(Integer repeticao) { this.repeticao = repeticao; }
 
     public Integer getDificuldade() { return dificuldade; }
     public void setDificuldade(Integer dificuldade) { this.dificuldade = dificuldade; }

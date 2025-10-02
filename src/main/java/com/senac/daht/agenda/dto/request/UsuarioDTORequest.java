@@ -14,7 +14,7 @@ public class UsuarioDTORequest {
 
     private String email;
 
-    private String telefone; // Telefone não precisa de @NotBlank se for opcional
+    private String telefone;
 
     private LocalDate dataNascimento;
 
@@ -23,7 +23,6 @@ public class UsuarioDTORequest {
 
     private Integer status;
 
-    // Getters e Setters
     public String getNome() { return nome; }
     public void setNome(String nome) { this.nome = nome; }
     public String getEmail() { return email; }

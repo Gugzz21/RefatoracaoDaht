@@ -9,7 +9,7 @@ public class Premio {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "premio_id")
-    private Integer id; // Integer
+    private Integer id;
 
     @Column(name = "premio_nome", length = 45)
     private String nome;
@@ -22,8 +22,6 @@ public class Premio {
 
     @OneToMany(mappedBy = "premio", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<TabelaPremio> premiosEmTabelas;
-
-    // Getters e Setters
     public Integer getId() { return id; }
     public void setId(Integer id) { this.id = id; }
     public String getNome() { return nome; }

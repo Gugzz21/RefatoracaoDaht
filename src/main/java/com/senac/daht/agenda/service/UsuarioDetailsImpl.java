@@ -26,12 +26,12 @@ public class UsuarioDetailsImpl implements UserDetails {
 
     @Override
     public String getPassword() {
-        return usuario.getSenha(); // Senha já hasheada
+        return usuario.getSenha();
     }
 
     @Override
     public String getUsername() {
-        return usuario.getEmail(); // Email é o nome de usuário (login)
+        return usuario.getEmail();
     }
 
     public Integer getIdUsuario(){
@@ -42,7 +42,6 @@ public class UsuarioDetailsImpl implements UserDetails {
         return usuario.getNome();
     }
 
-    // Métodos necessários da UserDetails
     @Override public boolean isAccountNonExpired() { return true; }
     @Override public boolean isAccountNonLocked() { return true; }
     @Override public boolean isCredentialsNonExpired() { return true; }

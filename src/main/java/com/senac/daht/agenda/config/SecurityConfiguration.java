@@ -17,44 +17,70 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 public class SecurityConfiguration {
 
-
     @Autowired
     private UserAuthenticationFilter userAuthenticationFilter;
-
-    // Caminhos Públicos (Liberados)
     public static final String [] ENDPOINTS_PUBLIC = {
-            "/api/usuario/criar",    // Criação de usuário (POST)
-            "/api/usuario/login",    // Login (para gerar o token)
+            //Usuário
+            "/api/usuario/criar",
+            "/api/usuario/login",
+            "/api/usuario/listar",
+            "/api/usuario/listarPorId/**",
+            "/api/usuario/atualizar/**",
+            "/api/usuario/deletar/**",
 
-            // Swagger/OpenAPI UI
+            //Personagem
+            "/api/personagem/criar",
+            "/api/personagem/login",
+            "/api/personagem/listar",
+            "/api/personagem/listarPorId/**",
+            "/api/personagem/atualizar/**",
+            "/api/personagem/deletar/**",
+
+            //Missão
+            "/api/missao/criar",
+            "/api/missao/login",
+            "/api/missao/listar",
+            "/api/missao/listarPorId/**",
+            "/api/missao/atualizar/**",
+            "/api/missao/deletar/**",
+
+            //Ganho
+            "/api/ganho/criar",
+            "/api/ganho/login",
+            "/api/ganho/listar",
+            "/api/ganho/listarPorId/**",
+            "/api/ganho/atualizar/**",
+            "/api/ganho/deletar/**",
+
+            //Prêmio
+            "/api/premio/criar",
+            "/api/premio/login",
+            "/api/premio/listar",
+            "/api/premio/listarPorId/**",
+            "/api/premio/atualizar/**",
+            "/api/premio/deletar/**",
+
+            //Tabela Prêmio
+            "/api/tabelapremio/criar",
+            "/api/tabelapremio/login",
+            "/api/tabelapremio/listar",
+            "/api/tabelapremio/listarPorId/**",
+            "/api/tabelapremio/deletar/**",
+
             "/v3/api-docs/**",
             "/swagger-ui/**",
             "/swagger-ui.html"
+
+
     };
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http
-                // 1. Desabilita CSRF
-                .csrf(csrf -> csrf.disable())
-
-                // 2. Define a política de sessão como STATELESS (padrão JWT)
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-
-                // 3. Define as Regras de Autorização (CRÍTICO)
+        http.csrf(csrf -> csrf.disable()).sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-
-                        // PRIMEIRA REGRA: Libera os endpoints públicos para acesso anônimo
                         .requestMatchers(ENDPOINTS_PUBLIC).permitAll()
-
-                        // SEGUNDA REGRA: Todo o resto (incluindo /api/listar, /api/deletar, etc.)
-                        // deve passar pelo processo de autenticação (filtro JWT)
                         .anyRequest().authenticated()
-                )
-
-                // 4. Adiciona o filtro JWT customizado ANTES do filtro de autenticação padrão
-                .addFilterBefore(userAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
-
+                ).addFilterBefore(userAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
 

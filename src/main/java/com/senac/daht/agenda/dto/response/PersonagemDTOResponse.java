@@ -2,7 +2,7 @@ package com.senac.daht.agenda.dto.response;
 
 public class PersonagemDTOResponse {
     private Long id;
-    private String nickname; // CAMPO INCLUÍDO
+    private String nickname;
     private Double vida;
     private Double ouro;
     private Double xp;
@@ -11,11 +11,10 @@ public class PersonagemDTOResponse {
     private Integer usuarioId;
     private String nomeUsuario;
 
-    // Getters e Setters
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
-    public String getNickname() { return nickname; } // Getter para o nickname
-    public void setNickname(String nickname) { this.nickname = nickname; } // Setter para o nickname
+    public String getNickname() { return nickname; }
+    public void setNickname(String nickname) { this.nickname = nickname; }
     public Double getVida() { return vida; }
     public void setVida(Double vida) { this.vida = vida; }
     public Double getOuro() { return ouro; }
