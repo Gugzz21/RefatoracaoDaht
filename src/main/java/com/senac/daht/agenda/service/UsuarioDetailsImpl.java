@@ -10,15 +10,22 @@ import java.util.stream.Collectors;
 
 public class UsuarioDetailsImpl implements UserDetails {
 
-    private final Usuario usuario;
+    private Usuario user; // Classe de usuário que criamos anteriormente
 
-    public UsuarioDetailsImpl(Usuario usuario){
-        this.usuario = usuario;
+    public UsuarioDetailsImpl(Usuario user) {
+        this.user = user;
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return usuario.getRoles()
+        /*
+         Este método converte a lista de papéis (roles) associados ao usuário
+         em uma coleção de GrantedAuthorities, que é a forma que o Spring Security
+         usa para representar papéis. Isso é feito mapeando cada papel para um
+         novo SimpleGrantedAuthority, que é uma implementação simples de
+         GrantedAuthority
+        */
+        return user.getRoles()
                 .stream()
                 .map(role -> new SimpleGrantedAuthority(role.getNome().name()))
                 .collect(Collectors.toList());
@@ -26,24 +33,31 @@ public class UsuarioDetailsImpl implements UserDetails {
 
     @Override
     public String getPassword() {
-        return usuario.getSenha();
-    }
+        return user.getSenha();
+    } // Retorna a credencial do usuário que criamos anteriormente
 
     @Override
     public String getUsername() {
-        return usuario.getEmail();
+        return user.getEmail();
+    } // Retorna o nome de usuário do usuário que criamos anteriormente
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
     }
 
-    public Integer getIdUsuario(){
-        return usuario.getId();
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
     }
 
-    public String getNomeUsuario(){
-        return usuario.getNome();
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
     }
 
-    @Override public boolean isAccountNonExpired() { return true; }
-    @Override public boolean isAccountNonLocked() { return true; }
-    @Override public boolean isCredentialsNonExpired() { return true; }
-    @Override public boolean isEnabled() { return usuario.getStatus() != null && usuario.getStatus() >= 0; }
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
 }

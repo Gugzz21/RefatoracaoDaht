@@ -13,52 +13,44 @@ import java.time.ZonedDateTime;
 @Service
 public class JwtTokenService {
 
-    private static final String SECRET_KEY = "Carrocinha_de_cachorroquente";
+    private static final String SECRET_KEY = "4Z^XrroxR@dWxqf$mTTKwW$!@#qGr4P"; // Chave secreta utilizada para gerar e verificar o token
 
-    private static final String ISSUER = "agenda-gamificada-daht";
+    private static final String ISSUER = "pizzurg-api"; // Emissor do token
 
-    private static final long EXPIRATION_HOURS = 4;
-
-    public String generateToken(UsuarioDetailsImpl userDetails) {
+    public String generateToken(UsuarioDetailsImpl user) {
         try {
-
+            // Define o algoritmo HMAC SHA256 para criar a assinatura do token passando a chave secreta definida
             Algorithm algorithm = Algorithm.HMAC256(SECRET_KEY);
-
             return JWT.create()
-                    .withIssuer(ISSUER)
-                    .withIssuedAt(creationDate())
-                    .withExpiresAt(expirationDate())
-                    .withSubject(userDetails.getUsername())
-                    .sign(algorithm);
-
-        } catch (JWTCreationException exception) {
-
-            throw new JWTCreationException("Erro ao gerar o token JWT.", exception);
+                    .withIssuer(ISSUER) // Define o emissor do token
+                    .withIssuedAt(creationDate()) // Define a data de emissão do token
+                    .withExpiresAt(expirationDate()) // Define a data de expiração do token
+                    .withSubject(user.getUsername()) // Define o assunto do token (neste caso, o nome de usuário)
+                    .sign(algorithm); // Assina o token usando o algoritmo especificado
+        } catch (JWTCreationException exception){
+            throw new JWTCreationException("Erro ao gerar token.", exception);
         }
     }
 
     public String getSubjectFromToken(String token) {
         try {
+            // Define o algoritmo HMAC SHA256 para verificar a assinatura do token passando a chave secreta definida
             Algorithm algorithm = Algorithm.HMAC256(SECRET_KEY);
-
             return JWT.require(algorithm)
-                    .withIssuer(ISSUER)
+                    .withIssuer(ISSUER) // Define o emissor do token
                     .build()
-                    .verify(token)
-                    .getSubject();
-
-        } catch (JWTVerificationException exception) {
-            throw new JWTVerificationException("Token inválido ou expirado. Requer nova autenticação.");
+                    .verify(token) // Verifica a validade do token
+                    .getSubject(); // Obtém o assunto (neste caso, o nome de usuário) do token
+        } catch (JWTVerificationException exception){
+            throw new JWTVerificationException("Token inválido ou expirado.");
         }
     }
 
     private Instant creationDate() {
-        return ZonedDateTime.now(ZoneId.of("America/Sao_Paulo")).toInstant();
+        return ZonedDateTime.now(ZoneId.of("America/Recife")).toInstant();
     }
 
     private Instant expirationDate() {
-        return ZonedDateTime.now(ZoneId.of("America/Sao_Paulo"))
-                .plusHours(EXPIRATION_HOURS)
-                .toInstant();
+        return ZonedDateTime.now(ZoneId.of("America/Recife")).plusHours(4).toInstant();
     }
 }
