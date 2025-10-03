@@ -1,5 +1,7 @@
 package com.senac.daht.agenda.controller;
 
+import com.senac.daht.agenda.dto.LoginUserDto;
+import com.senac.daht.agenda.dto.RecoveryJwtTokenDto;
 import com.senac.daht.agenda.dto.request.UsuarioDTORequest;
 import com.senac.daht.agenda.dto.response.UsuarioDTOResponse;
 import com.senac.daht.agenda.service.UsuarioService;
@@ -57,5 +59,11 @@ public class UsuarioController {
     public ResponseEntity<Void> deletarUsuario(@PathVariable("id") Integer id) {
         usuarioService.deletarUsuario(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<RecoveryJwtTokenDto> authenticateUser(@RequestBody LoginUserDto loginUserDto) {
+        RecoveryJwtTokenDto token = usuarioService.authenticateUser(loginUserDto);
+        return new ResponseEntity<>(token, HttpStatus.OK);
     }
 }

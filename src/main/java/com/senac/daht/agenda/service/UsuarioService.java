@@ -1,12 +1,19 @@
 package com.senac.daht.agenda.service;
 
 import com.senac.daht.agenda.config.SecurityConfiguration;
+import com.senac.daht.agenda.dto.CreateUserDto;
+import com.senac.daht.agenda.dto.LoginUserDto;
+import com.senac.daht.agenda.dto.RecoveryJwtTokenDto;
 import com.senac.daht.agenda.dto.request.UsuarioDTORequest;
 import com.senac.daht.agenda.dto.response.UsuarioDTOResponse;
+import com.senac.daht.agenda.entity.Role;
 import com.senac.daht.agenda.entity.Usuario;
 import com.senac.daht.agenda.repository.UsuarioRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,8 +23,17 @@ import java.util.stream.Collectors;
 @Service
 public class UsuarioService {
 
-    private final UsuarioRepository usuarioRepository;
-    private final SecurityConfiguration securityConfiguration;
+    @Autowired
+    private AuthenticationManager authenticationManager;
+
+    @Autowired
+    private JwtTokenService jwtTokenService;
+
+    @Autowired
+    private UsuarioRepository usuarioRepository;
+
+    @Autowired
+    private SecurityConfiguration securityConfiguration;
 
     @Autowired
     public UsuarioService(UsuarioRepository usuarioRepository, SecurityConfiguration securityConfiguration) {
@@ -55,8 +71,6 @@ public class UsuarioService {
 
         return usuario;
     }
-
-
     @Transactional
     public UsuarioDTOResponse criarUsuario(UsuarioDTORequest request) {
         if (usuarioRepository.findByEmail(request.getEmail()).isPresent()) {
@@ -108,4 +122,47 @@ public class UsuarioService {
         }
         usuarioRepository.apagarLogico(id);
     }
+
+    public RecoveryJwtTokenDto authenticateUser(LoginUserDto loginUserDto) {
+        // Cria um objeto de autenticação com o email e a senha do usuário
+        UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
+                new UsernamePasswordAuthenticationToken(loginUserDto.email(), loginUserDto.password());
+
+        // Autentica o usuário com as credenciais fornecidas
+        Authentication authentication = authenticationManager.authenticate(usernamePasswordAuthenticationToken);
+
+        // Obtém o objeto UserDetails do usuário autenticado
+        UsuarioDetailsImpl userDetails = (UsuarioDetailsImpl) authentication.getPrincipal();
+
+        // Gera um token JWT para o usuário autenticado
+        return new RecoveryJwtTokenDto(jwtTokenService.generateToken(userDetails));
+    }
+    // Método responsável por criar um usuário
+    public void createUser(CreateUserDto createUserDto) {
+        Role role = new Role();
+        role.setNome(createUserDto.role());
+
+        Usuario newUser = new Usuario();
+        newUser.setEmail(createUserDto.email());
+        newUser.setSenha(securityConfiguration.passwordEncoder().encode(createUserDto.password()));
+        newUser.setRoles(List.of(role));
+
+        // Cria um novo usuário com os dados fornecidos
+        /*
+        User newUser = User.builder()
+                .email(createUserDto.email())
+                // Codifica a senha do usuário com o algoritmo bcrypt
+                .password(securityConfiguration.passwordEncoder().encode(createUserDto.password()))
+                // Atribui ao usuário uma permissão específica
+                .roles(List.of(Role.builder().name(createUserDto.role()).build()))
+                .build();
+         */
+        // Salva o novo usuário no banco de dados
+        usuarioRepository.save(newUser);
+    }
+
+
+
+
+
 }
