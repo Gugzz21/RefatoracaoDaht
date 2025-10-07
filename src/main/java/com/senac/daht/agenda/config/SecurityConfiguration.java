@@ -21,30 +21,9 @@ public class SecurityConfiguration {
     private UserAuthenticationFilter userAuthenticationFilter;
 
     public static final String [] ENDPOINTS_WITH_AUTHENTICATION_NOT_REQUIRED = {
-            // Tabela Prêmio
-            "/api/tabelapremio/criar",
-            "/api/tabelapremio/login",
-
-            //Prêmio
-            "/api/premio/criar",
-            "/api/premio/login",
-
-            //Personagem
-            "/api/personagem/criar",
-            "/api/personagem/login",
-
-            //Missão
-            "/api/missao/criar",
-            "/api/missao/login",
-
             //Usuário
             "/api/usuario/criar",
             "/api/usuario/login",
-
-            //Ganho
-            "/api/ganho/criar",
-            "/api/ganho/login",
-
 
             "/h2-console",
 
@@ -56,6 +35,7 @@ public class SecurityConfiguration {
 
     // Endpoints que requerem autenticação para serem acessados
     public static final String [] ENDPOINTS_WITH_AUTHENTICATION_REQUIRED = {
+
             //Usuário
             "/api/usuario/listar",
             "/api/usuario/listarPorId/**",
@@ -67,29 +47,34 @@ public class SecurityConfiguration {
             "/api/personagem/listarPorId/**",
             "/api/personagem/atualizar/**",
             "/api/personagem/deletar/**",
+            "/api/personagem/criar",
 
             //Missão
             "/api/missao/listar",
             "/api/missao/listarPorId/**",
             "/api/missao/atualizar/**",
             "/api/missao/deletar/**",
+            "/api/missao/criar",
 
             //Ganho
             "/api/ganho/listar",
             "/api/ganho/listarPorId/**",
             "/api/ganho/atualizar/**",
             "/api/ganho/deletar/**",
+            "/api/ganho/criar",
 
             //Prêmio
             "/api/premio/listar",
             "/api/premio/listarPorId/**",
             "/api/premio/atualizar/**",
             "/api/premio/deletar/**",
+            "/api/premio/criar",
 
             //Tabela Prêmio
             "/api/tabelapremio/listar",
             "/api/tabelapremio/listarPorId/**",
             "/api/tabelapremio/deletar/**",
+            "/api/tabelapremio/criar"
     };
 
     // Endpoints que só podem ser acessador por usuários com permissão de cliente
