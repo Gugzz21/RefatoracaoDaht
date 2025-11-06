@@ -11,7 +11,7 @@
     <groupId>com.senac.daht</groupId>
     <artifactId>daht</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>Daht </name>
+    <name>daht</name>
     <description>Agenda gameficada para criação de hábitos </description>
     <url/>
     <licenses>
