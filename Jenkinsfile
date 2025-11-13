@@ -37,8 +37,8 @@ pipeline {
                     def imageTag = "${appName}:${env.BUILD_ID}"
 
                     // Parar e remover o container existente, se houver
-            		bat "docker stop ${daht} || exit 0"
-            		bat "docker rm -v ${daht} || exit 0"  // Remover o container e os volumes associados
+            		bat "docker stop ${appName} || exit 0"
+            		bat "docker rm -v ${appName} || exit 0"  // Remover o container e os volumes associados
 
                     // Executar o novo container
                     bat "docker-compose up -d --build"
