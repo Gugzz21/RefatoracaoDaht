@@ -13,6 +13,6 @@ FROM amazoncorretto:21-alpine
 # O nome daht.jar vem da tag finalName do pom.xml que adicionei
 COPY --from=build target/*.jar app.jar
 
-EXPOSE 9090
+EXPOSE 8412
 
 CMD ["java", "-jar", "/app.jar"]
