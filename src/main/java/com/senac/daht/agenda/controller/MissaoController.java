@@ -14,6 +14,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("api/missao")
+@CrossOrigin(origins = "*")
 @Tag(name = "Missão", description = "API para o gerenciamento de missões de personagem (Com Apagado Lógico)")
 public class MissaoController {
 

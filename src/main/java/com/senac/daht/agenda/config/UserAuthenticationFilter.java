@@ -16,55 +16,57 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
-import java.util.Arrays;
+import java.util.Optional;
 
 @Component
 public class UserAuthenticationFilter extends OncePerRequestFilter {
 
     @Autowired
-    private JwtTokenService jwtTokenService; // Service que definimos anteriormente
+    private JwtTokenService jwtTokenService;
 
     @Autowired
-    private UsuarioRepository userRepository; // Repository que definimos anteriormente
+    private UsuarioRepository userRepository;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        // Verifica se o endpoint requer autenticação antes de processar a requisição
-        if (checkIfEndpointIsNotPublic(request)) {
-            String token = recoveryToken(request); // Recupera o token do cabeçalho Authorization da requisição
-            if (token != null) {
-                String subject = jwtTokenService.getSubjectFromToken(token); // Obtém o assunto (neste caso, o nome de usuário) do token
-                Usuario user = userRepository.findByEmail(subject).get(); // Busca o usuário pelo email (que é o assunto do token)
-                UsuarioDetailsImpl userDetails = new UsuarioDetailsImpl(user); // Cria um UserDetails com o usuário encontrado
+        String token = recoveryToken(request);
 
-                // Cria um objeto de autenticação do Spring Security
-                Authentication authentication =
-                        new UsernamePasswordAuthenticationToken(userDetails.getUsername(), null, userDetails.getAuthorities());
+        // LÓGICA CORRIGIDA:
+        // 1. Se o token existir, tentamos validar.
+        // 2. Se o token NÃO existir, NÃO lançamos erro. Apenas deixamos o request seguir.
+        //    Se a rota exigir autenticação, o Spring Security vai retornar 403 Forbidden automaticamente depois.
 
-                // Define o objeto de autenticação no contexto de segurança do Spring Security
-                SecurityContextHolder.getContext().setAuthentication(authentication);
-            } else {
-                throw new RuntimeException("O token está ausente.");
+        if (token != null) {
+            try {
+                String subject = jwtTokenService.getSubjectFromToken(token);
+
+                // Usamos findByEmail e verificamos se existe para evitar erro de .get() em null
+                Optional<Usuario> userOptional = userRepository.findByEmail(subject);
+
+                if (userOptional.isPresent()) {
+                    Usuario user = userOptional.get();
+                    UsuarioDetailsImpl userDetails = new UsuarioDetailsImpl(user);
+
+                    Authentication authentication =
+                            new UsernamePasswordAuthenticationToken(userDetails.getUsername(), null, userDetails.getAuthorities());
+
+                    SecurityContextHolder.getContext().setAuthentication(authentication);
+                }
+            } catch (Exception e) {
+                // Se o token for inválido, apenas ignoramos (não autenticamos) e deixamos o fluxo seguir.
+                // O Spring Security barrará o acesso se necessário.
             }
         }
-        filterChain.doFilter(request, response); // Continua o processamento da requisição
+
+        // Continua o fluxo (vai para o Controller ou é barrado pelo SecurityConfig)
+        filterChain.doFilter(request, response);
     }
 
-    // Recupera o token do cabeçalho Authorization da requisição
     private String recoveryToken(HttpServletRequest request) {
         String authorizationHeader = request.getHeader("Authorization");
         if (authorizationHeader != null) {
             return authorizationHeader.replace("Bearer ", "");
         }
         return null;
-    }
-
-    // Verifica se o endpoint requer autenticação antes de processar a requisição
-    private boolean checkIfEndpointIsNotPublic(HttpServletRequest request) {
-        //ajustado para funcionamento do swagger
-        String requestURI = request.getRequestURI();
-        return Arrays.stream(SecurityConfiguration.ENDPOINTS_WITH_AUTHENTICATION_NOT_REQUIRED).noneMatch(publicEndpoint ->
-                requestURI.startsWith(publicEndpoint.replace("/**", "")) // suporta wildcard
-        );
     }
 }

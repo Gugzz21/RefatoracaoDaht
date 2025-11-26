@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daht Project Integrador - Download</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; text-align: center; margin-top: 50px; background-color: #f4f4f9; color: #333; }
+        .container { max-width: 600px; margin: 0 auto; padding: 20px; background: white; border-radius: 12px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); }
+        h1 { color: #007bff; }
+        .download-button {
+            display: inline-block;
+            padding: 15px 30px;
+            font-size: 18px;
+            font-weight: bold;
+            color: white;
+            background-color: #28a745; /* Verde para Download */
+            text-decoration: none;
+            border-radius: 30px;
+            margin-top: 30px;
+            transition: background-color 0.3s ease;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        .download-button:hover {
+            background-color: #218838;
+        }
+        p { line-height: 1.6; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>✅ Daht - Aplicativo de Agenda e Missões</h1>
+    <p>Bem-vindo à página de download do nosso Projeto Integrador.</p>
+    <p>Esta é a versão mais recente do aplicativo Android, gerada diretamente pelo nosso pipeline de CI/CD.</p>
+
+    <!-- O link aponta para o artefato que será movido abaixo -->
+    <a href="/DahtApp.apk" class="download-button" download>⬇️ Baixar Daht App (APK)</a>
+
+    <p style="margin-top: 40px; font-size: 0.9em; color: #6c757d;">Versão: ${env.BUILD_ID} | Última Atualização: ${new Date().format('dd/MM/yyyy HH:mm:ss', TimeZone.getTimeZone('America/Sao_Paulo'))}</p>
+</div>
+</body>
+</html>

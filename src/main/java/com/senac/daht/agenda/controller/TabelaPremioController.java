@@ -14,6 +14,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("api/tabelapremio")
+@CrossOrigin(origins = "*")
 @Tag(name = "Tabela Prêmio", description = "API para o gerenciamento da relação Personagem-Prêmio (Com Apagado Lógico)")
 public class TabelaPremioController {
 
