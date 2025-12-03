@@ -7,7 +7,9 @@ import com.senac.daht.agenda.dto.RecoveryJwtTokenDto;
 import com.senac.daht.agenda.dto.request.UsuarioDTORequest;
 import com.senac.daht.agenda.dto.response.UsuarioDTOResponse;
 import com.senac.daht.agenda.entity.Role;
+import com.senac.daht.agenda.entity.RoleName;
 import com.senac.daht.agenda.entity.Usuario;
+import com.senac.daht.agenda.repository.RoleRepository;
 import com.senac.daht.agenda.repository.UsuarioRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,14 +35,18 @@ public class UsuarioService {
     private UsuarioRepository usuarioRepository;
 
     @Autowired
-    private SecurityConfiguration securityConfiguration;
+    private RoleRepository roleRepository; // <--- NOVO: Injetando o repositório de roles
 
     @Autowired
-    public UsuarioService(UsuarioRepository usuarioRepository, SecurityConfiguration securityConfiguration) {
+    private SecurityConfiguration securityConfiguration;
+
+    // Construtor atualizado
+    @Autowired
+    public UsuarioService(UsuarioRepository usuarioRepository, SecurityConfiguration securityConfiguration, RoleRepository roleRepository) {
         this.usuarioRepository = usuarioRepository;
         this.securityConfiguration = securityConfiguration;
+        this.roleRepository = roleRepository;
     }
-
 
     private UsuarioDTOResponse convertToDto(Usuario usuario) {
         UsuarioDTOResponse response = new UsuarioDTOResponse();
@@ -67,10 +73,11 @@ public class UsuarioService {
         String senhaHash = securityConfiguration.passwordEncoder().encode(request.getSenha());
         usuario.setSenha(senhaHash);
 
-        usuario.setStatus(request.getStatus() != null ? request.getStatus() : 0);
+        usuario.setStatus(request.getStatus() != null ? request.getStatus() : 1); // Padrão 1 (ativo)
 
         return usuario;
     }
+
     @Transactional
     public UsuarioDTOResponse criarUsuario(UsuarioDTORequest request) {
         if (usuarioRepository.findByEmail(request.getEmail()).isPresent()) {
@@ -78,6 +85,15 @@ public class UsuarioService {
         }
 
         Usuario usuario = convertToEntity(request);
+
+        // --- LÓGICA DE ROLE ADICIONADA ---
+        // Busca a role "ROLE_USER" no banco para atribuir ao novo cadastro
+        Role roleUser = roleRepository.findByNome(RoleName.ROLE_USER)
+                .orElseThrow(() -> new RuntimeException("Erro: Role ROLE_USER não encontrada no banco de dados."));
+
+        usuario.setRoles(List.of(roleUser));
+        // ---------------------------------
+
         Usuario savedUsuario = usuarioRepository.save(usuario);
         return convertToDto(savedUsuario);
     }
@@ -124,20 +140,16 @@ public class UsuarioService {
     }
 
     public RecoveryJwtTokenDto authenticateUser(LoginUserDto loginUserDto) {
-        // Cria um objeto de autenticação com o email e a senha do usuário
         UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
                 new UsernamePasswordAuthenticationToken(loginUserDto.email(), loginUserDto.password());
 
-        // Autentica o usuário com as credenciais fornecidas
         Authentication authentication = authenticationManager.authenticate(usernamePasswordAuthenticationToken);
 
-        // Obtém o objeto UserDetails do usuário autenticado
         UsuarioDetailsImpl userDetails = (UsuarioDetailsImpl) authentication.getPrincipal();
 
-        // Gera um token JWT para o usuário autenticado
         return new RecoveryJwtTokenDto(jwtTokenService.generateToken(userDetails));
     }
-    // Método responsável por criar um usuário
+
     public void createUser(CreateUserDto createUserDto) {
         Role role = new Role();
         role.setNome(createUserDto.role());
@@ -147,22 +159,6 @@ public class UsuarioService {
         newUser.setSenha(securityConfiguration.passwordEncoder().encode(createUserDto.password()));
         newUser.setRoles(List.of(role));
 
-        // Cria um novo usuário com os dados fornecidos
-        /*
-        User newUser = User.builder()
-                .email(createUserDto.email())
-                // Codifica a senha do usuário com o algoritmo bcrypt
-                .password(securityConfiguration.passwordEncoder().encode(createUserDto.password()))
-                // Atribui ao usuário uma permissão específica
-                .roles(List.of(Role.builder().name(createUserDto.role()).build()))
-                .build();
-         */
-        // Salva o novo usuário no banco de dados
         usuarioRepository.save(newUser);
     }
-
-
-
-
-
 }
