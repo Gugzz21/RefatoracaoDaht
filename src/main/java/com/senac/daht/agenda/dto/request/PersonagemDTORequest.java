@@ -24,6 +24,34 @@ public class PersonagemDTORequest {
 
     private Integer usuarioId;
 
+    private Integer molduraId;
+    private Integer cabecaId;
+    private Integer maoId;
+
+    public Integer getMolduraId() {
+        return molduraId;
+    }
+
+    public void setMolduraId(Integer molduraId) {
+        this.molduraId = molduraId;
+    }
+
+    public Integer getCabecaId() {
+        return cabecaId;
+    }
+
+    public void setCabecaId(Integer cabecaId) {
+        this.cabecaId = cabecaId;
+    }
+
+    public Integer getMaoId() {
+        return maoId;
+    }
+
+    public void setMaoId(Integer maoId) {
+        this.maoId = maoId;
+    }
+
     public String getNickname() { return nickname; }
     public void setNickname(String nickname) { this.nickname = nickname; }
     public Double getVida() { return vida; }
@@ -38,4 +66,6 @@ public class PersonagemDTORequest {
     public void setStatus(Integer status) { this.status = status; }
     public Integer getUsuarioId() { return usuarioId; }
     public void setUsuarioId(Integer usuarioId) { this.usuarioId = usuarioId; }
+
+
 }

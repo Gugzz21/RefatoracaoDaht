@@ -11,6 +11,18 @@ public class PersonagemDTOResponse {
     private Integer usuarioId;
     private String nomeUsuario;
 
+    private Integer molduraId;
+    private Integer cabecaId;
+    private Integer maoId;
+
+    // Adicione os Getters e Setters...
+    public Integer getMolduraId() { return molduraId; }
+    public void setMolduraId(Integer molduraId) { this.molduraId = molduraId; }
+    public Integer getCabecaId() { return cabecaId; }
+    public void setCabecaId(Integer cabecaId) { this.cabecaId = cabecaId; }
+    public Integer getMaoId() { return maoId; }
+    public void setMaoId(Integer maoId) { this.maoId = maoId; }
+
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
     public String getNickname() { return nickname; }

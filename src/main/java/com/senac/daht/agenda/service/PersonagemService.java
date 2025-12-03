@@ -25,6 +25,7 @@ public class PersonagemService {
         this.personagemRepository = personagemRepository;
         this.usuarioRepository = usuarioRepository;
     }
+
     private PersonagemDTOResponse convertToDto(Personagem personagem) {
         PersonagemDTOResponse response = new PersonagemDTOResponse();
         response.setId(personagem.getId().longValue());
@@ -34,6 +35,11 @@ public class PersonagemService {
         response.setXp(personagem.getXp());
         response.setNivel(personagem.getNivel());
         response.setStatus(personagem.getStatus());
+
+        // Mapeando os itens visuais para o Frontend
+        response.setMolduraId(personagem.getMolduraId());
+        response.setCabecaId(personagem.getCabecaId());
+        response.setMaoId(personagem.getMaoId());
 
         if (personagem.getUsuario() != null) {
             response.setUsuarioId(personagem.getUsuario().getId());
@@ -50,9 +56,14 @@ public class PersonagemService {
         personagem.setXp(request.getXp());
         personagem.setNivel(request.getNivel());
         personagem.setStatus(request.getStatus());
+
+        // Mapeando na criação (caso venha preenchido)
+        personagem.setMolduraId(request.getMolduraId());
+        personagem.setCabecaId(request.getCabecaId());
+        personagem.setMaoId(request.getMaoId());
+
         return personagem;
     }
-
 
     @Transactional
     public PersonagemDTOResponse criarPersonagem(PersonagemDTORequest request) {
@@ -84,12 +95,21 @@ public class PersonagemService {
     public PersonagemDTOResponse atualizarPersonagem(Integer id, PersonagemDTORequest request) {
         Personagem personagem = personagemRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Personagem ativo com ID " + id + " não encontrado."));
+
+        // Atualiza campos básicos
         personagem.setNickname(request.getNickname());
         personagem.setVida(request.getVida());
         personagem.setOuro(request.getOuro());
         personagem.setXp(request.getXp());
         personagem.setNivel(request.getNivel());
         personagem.setStatus(request.getStatus());
+
+        // --- ATUALIZAÇÃO DOS ITENS VISUAIS ---
+        // Permite equipar/desequipar itens salvando no banco
+        personagem.setMolduraId(request.getMolduraId());
+        personagem.setCabecaId(request.getCabecaId());
+        personagem.setMaoId(request.getMaoId());
+        // -------------------------------------
 
         if (request.getUsuarioId() != null && !personagem.getUsuario().getId().equals(request.getUsuarioId())) {
             Usuario usuario = usuarioRepository.findById(request.getUsuarioId())
