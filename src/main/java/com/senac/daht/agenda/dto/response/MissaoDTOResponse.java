@@ -7,10 +7,22 @@ public class MissaoDTOResponse {
     private String descricao;
     private int repeticao;
     private Integer dificuldade;
+
+    // --- ADICIONE ESTE CAMPO ---
+    private Integer efeito;
+    // ---------------------------
+
     private LocalDate dataFinalizacao;
     private LocalDate dataInicio;
     private Integer status;
     private Long personagemId;
+
+    // Getters e Setters existentes...
+
+    // --- ADICIONE OS GETTERS E SETTERS DO EFEITO ---
+    public Integer getEfeito() { return efeito; }
+    public void setEfeito(Integer efeito) { this.efeito = efeito; }
+    // -----------------------------------------------
 
     public Integer getId() { return id; }
     public void setId(Integer id) { this.id = id; }

@@ -26,7 +26,6 @@ public class MissaoService {
         this.personagemRepository = personagemRepository;
     }
 
-
     @Transactional
     public MissaoDTOResponse criarMissao(MissaoDTORequest request) {
         Personagem personagem = personagemRepository.findById(request.getPersonagemId().intValue())
@@ -36,6 +35,8 @@ public class MissaoService {
         missao.setDescricao(request.getDescricao());
         missao.setRepeticao(request.getRepeticao());
         missao.setDificuldade(request.getDificuldade());
+        // Setting the effect from the request to the entity
+        missao.setEfeito(request.getEfeito());
         missao.setDataFinalizacao(request.getDataFinalizacao());
         missao.setDataInicio(request.getDataInicio());
         missao.setStatus(request.getStatus());
@@ -43,11 +44,14 @@ public class MissaoService {
 
         Missao savedMissao = missaoRepository.save(missao);
 
+        // Converting to Response
         MissaoDTOResponse response = new MissaoDTOResponse();
         response.setId(savedMissao.getId());
         response.setDescricao(savedMissao.getDescricao());
         response.setRepeticao(savedMissao.getRepeticao());
         response.setDificuldade(savedMissao.getDificuldade());
+        // IMPORTANT: Sending the effect back to the frontend
+        response.setEfeito(savedMissao.getEfeito());
         response.setDataFinalizacao(savedMissao.getDataFinalizacao());
         response.setDataInicio(savedMissao.getDataInicio());
         response.setStatus(savedMissao.getStatus());
@@ -67,6 +71,8 @@ public class MissaoService {
                     response.setDescricao(missao.getDescricao());
                     response.setRepeticao(missao.getRepeticao());
                     response.setDificuldade(missao.getDificuldade());
+                    // IMPORTANT: Sending the effect back to the frontend
+                    response.setEfeito(missao.getEfeito());
                     response.setDataFinalizacao(missao.getDataFinalizacao());
                     response.setDataInicio(missao.getDataInicio());
                     response.setStatus(missao.getStatus());
@@ -87,6 +93,8 @@ public class MissaoService {
         response.setDescricao(missao.getDescricao());
         response.setRepeticao(missao.getRepeticao());
         response.setDificuldade(missao.getDificuldade());
+        // IMPORTANT: Sending the effect back to the frontend
+        response.setEfeito(missao.getEfeito());
         response.setDataFinalizacao(missao.getDataFinalizacao());
         response.setDataInicio(missao.getDataInicio());
         response.setStatus(missao.getStatus());
@@ -108,16 +116,21 @@ public class MissaoService {
         missao.setDescricao(request.getDescricao());
         missao.setRepeticao(request.getRepeticao());
         missao.setDificuldade(request.getDificuldade());
+        // Updating the effect
+        missao.setEfeito(request.getEfeito());
         missao.setDataFinalizacao(request.getDataFinalizacao());
         missao.setDataInicio(request.getDataInicio());
         missao.setStatus(request.getStatus());
 
         Missao updatedMissao = missaoRepository.save(missao);
+
         MissaoDTOResponse response = new MissaoDTOResponse();
         response.setId(updatedMissao.getId());
         response.setDescricao(updatedMissao.getDescricao());
         response.setRepeticao(updatedMissao.getRepeticao());
         response.setDificuldade(updatedMissao.getDificuldade());
+        // IMPORTANT: Sending the effect back to the frontend
+        response.setEfeito(updatedMissao.getEfeito());
         response.setDataFinalizacao(updatedMissao.getDataFinalizacao());
         response.setDataInicio(updatedMissao.getDataInicio());
         response.setStatus(updatedMissao.getStatus());
