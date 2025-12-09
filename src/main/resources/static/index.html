@@ -3,40 +3,239 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Daht Project Integrador - Download</title>
+    <title>DAHT - Gamifique Seus Hábitos</title>
     <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; text-align: center; margin-top: 50px; background-color: #f4f4f9; color: #333; }
-        .container { max-width: 600px; margin: 0 auto; padding: 20px; background: white; border-radius: 12px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); }
-        h1 { color: #007bff; }
-        .download-button {
-            display: inline-block;
-            padding: 15px 30px;
-            font-size: 18px;
+        :root {
+            --primary-orange: #FF9F1C; /* Baseado no fundo do app */
+            --primary-purple: #6A0DAD; /* Baseado nos botões de Missões/Prêmios */
+            --primary-green: #2EC4B6; /* Baseado nos indicadores de vida/botões */
+            --dark-bg: #1a1a1a;
+            --light-text: #f4f4f4;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f9f9f9;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        /* Header */
+        header {
+            background-color: var(--primary-orange);
+            padding: 1rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .logo {
+            font-size: 1.8rem;
             font-weight: bold;
-            color: white;
-            background-color: #28a745; /* Verde para Download */
+            color: #fff;
+            letter-spacing: 2px;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 20px;
+        }
+
+        nav a {
             text-decoration: none;
+            color: #fff;
+            font-weight: 600;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, var(--primary-orange), #ffb74d);
+            color: white;
+            text-align: center;
+            padding: 4rem 1rem;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 600px;
+            margin: 0 auto 2rem auto;
+        }
+
+        .cta-button {
+            background-color: var(--primary-purple);
+            color: white;
+            padding: 12px 30px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: transform 0.3s;
+            display: inline-block;
+        }
+
+        .cta-button:hover {
+            transform: scale(1.05);
+            background-color: #580a91;
+        }
+
+        /* Features Section */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 3rem 1rem;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 3rem;
+            color: var(--dark-bg);
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .card {
+            background: white;
+            border-radius: 10px;
+            padding: 2rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            text-align: center;
+            border-top: 5px solid var(--primary-green);
+        }
+
+        .card h3 {
+            color: var(--primary-purple);
+            margin-bottom: 1rem;
+        }
+
+        /* Gamification Mechanics */
+        .mechanics {
+            background-color: var(--dark-bg);
+            color: white;
+            padding: 4rem 1rem;
+        }
+
+        .mechanics .grid {
+            margin-top: 2rem;
+        }
+
+        .mechanics .card {
+            background: #2a2a2a;
+            color: #ddd;
+            border-top: 5px solid var(--primary-orange);
+        }
+
+        /* Footer */
+        footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 2rem;
+            margin-top: auto;
+        }
+
+        /* Screenshot Placeholder */
+        .app-preview {
+            max-width: 300px;
+            margin: 20px auto;
+            border: 8px solid #333;
             border-radius: 30px;
-            margin-top: 30px;
-            transition: background-color 0.3s ease;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+            background: #fff;
         }
-        .download-button:hover {
-            background-color: #218838;
+
+        .app-preview img {
+            width: 100%;
+            display: block;
         }
-        p { line-height: 1.6; }
+
     </style>
 </head>
 <body>
-<div class="container">
-    <h1>✅ Daht - Aplicativo de Agenda e Missões</h1>
-    <p>Bem-vindo à página de download do nosso Projeto Integrador.</p>
-    <p>Esta é a versão mais recente do aplicativo Android, gerada diretamente pelo nosso pipeline de CI/CD.</p>
 
-    <!-- O link aponta para o artefato que será movido abaixo -->
-    <a href="/DahtApp.apk" class="download-button" download>⬇️ Baixar Daht App (APK)</a>
+<header>
+    <div class="logo">DAHT</div>
+    <nav>
+        <ul>
+            <li><a href="#sobre">Sobre</a></li>
+            <li><a href="#funcionalidades">Funcionalidades</a></li>
+            <li><a href="#gamificacao">Gamificação</a></li>
+        </ul>
+    </nav>
+</header>
 
-    <p style="margin-top: 40px; font-size: 0.9em; color: #6c757d;">Versão: ${env.BUILD_ID} | Última Atualização: ${new Date().format('dd/MM/yyyy HH:mm:ss', TimeZone.getTimeZone('America/Sao_Paulo'))}</p>
-</div>
+<section class="hero">
+    <h1>Gamifique Seus Hábitos</h1>
+    <p>Um aplicativo inovador para criar hábitos, permitindo personalização fácil e uma experiência intuitiva.</p>
+    <a href="#" class="cta-button">Se aventure no app já!!!</a>
+    <img src="../images/QRCODE.png">
+</section>
+
+<section id="sobre" class="container">
+    <h2 class="section-title">O que é o DAHT?</h2>
+    <div style="text-align: center; max-width: 800px; margin: 0 auto;">
+        <p>O DAHT é um aplicativo que utiliza gamificação para ajudar os usuários a formarem hábitos. O registro é simples e oferece personalização desde o início, permitindo que você escolha seu avatar e nickname únicos.</p>
+    </div>
+</section>
+
+<section id="funcionalidades" class="container">
+    <h2 class="section-title">Funcionalidades Principais</h2>
+    <div class="grid">
+        <div class="card">
+            <h3>Gestão de Missões</h3>
+            <p>Crie missões que incentivam hábitos positivos, como exercícios ou leitura. Visualize facilmente suas missões ativas e concluídas.</p>
+        </div>
+        <div class="card">
+            <h3>Controle Total</h3>
+            <p>O sistema permite a exclusão de missões que não deseja mais, oferecendo flexibilidade para adaptar o app às suas necessidades.</p>
+        </div>
+        <div class="card">
+            <h3>Personalização</h3>
+            <p>Uma interface amigável onde você pode alterar sua foto de perfil, nickname e acompanhar seu progresso visualmente.</p>
+        </div>
+    </div>
+</section>
+
+<section id="gamificacao" class="mechanics">
+    <div class="container">
+        <h2 class="section-title" style="color: white;">Mecânicas de Jogo</h2>
+        <div class="grid">
+            <div class="card">
+                <h3>Vida e Níveis</h3>
+                <p>Completar missões positivas gera <strong>Ouro e XP</strong>, aumentando o nível e a vida do seu personagem.</p>
+            </div>
+            <div class="card">
+                <h3>Penalidades</h3>
+                <p>Cuidado! Caso não cumpra missões ou complete missões negativas, você perde vida, tornando a experiência mais desafiadora.</p>
+            </div>
+            <div class="card">
+                <h3>Recompensas</h3>
+                <p>Ao subir de nível, ganhe vida e ouro extra. Troque seu ouro acumulado por prêmios incríveis na loja do app.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<footer>
+    <p>DAHT - Gamifique Seus Hábitos</p>
+    <p>Desenvolvido por: <strong>Gustavo Diniz Alves</strong></p>
+    <p>&copy; 2025 Todos os direitos reservados.</p>
+</footer>
+
 </body>
 </html>
