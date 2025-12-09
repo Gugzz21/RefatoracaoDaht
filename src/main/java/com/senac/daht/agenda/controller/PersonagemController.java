@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("api/personagem")
+@RequestMapping("/api/personagem")
 @CrossOrigin(origins = "*")
 @Tag(name = "Personagem", description = "API para o gerenciamento de personagens (Com Apagado Lógico)")
 public class PersonagemController {
@@ -39,7 +39,8 @@ public class PersonagemController {
 
     @PostMapping("/criar")
     @Operation(summary = "Criar novo personagem", description = "Cria um novo registro de personagem.")
-    public ResponseEntity<PersonagemDTOResponse> criarPersonagem(@Valid @RequestBody PersonagemDTORequest personagemDTORequest) {
+    public ResponseEntity<PersonagemDTOResponse> criarPersonagem(
+            @Valid @RequestBody PersonagemDTORequest personagemDTORequest) {
         PersonagemDTOResponse novoPersonagem = personagemService.criarPersonagem(personagemDTORequest);
         return ResponseEntity.status(HttpStatus.CREATED).body(novoPersonagem);
     }

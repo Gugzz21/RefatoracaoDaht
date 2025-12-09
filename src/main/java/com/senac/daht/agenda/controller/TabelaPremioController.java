@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("api/tabelapremio")
+@RequestMapping("/api/tabelapremio")
 @CrossOrigin(origins = "*")
 @Tag(name = "Tabela Prêmio", description = "API para o gerenciamento da relação Personagem-Prêmio (Com Apagado Lógico)")
 public class TabelaPremioController {
@@ -39,7 +39,8 @@ public class TabelaPremioController {
 
     @PostMapping("/criar")
     @Operation(summary = "Criar nova relação", description = "Cria um novo registro de relação entre Personagem e Prêmio.")
-    public ResponseEntity<TabelaPremioDTOResponse> criarTabelaPremio(@Valid @RequestBody TabelaPremioDTORequest tabelaPremioDTORequest) {
+    public ResponseEntity<TabelaPremioDTOResponse> criarTabelaPremio(
+            @Valid @RequestBody TabelaPremioDTORequest tabelaPremioDTORequest) {
         TabelaPremioDTOResponse novaTabelaPremio = tabelaPremioService.criarTabelaPremio(tabelaPremioDTORequest);
         return ResponseEntity.status(HttpStatus.CREATED).body(novaTabelaPremio);
     }

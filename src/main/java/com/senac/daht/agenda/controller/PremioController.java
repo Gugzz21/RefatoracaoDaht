@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("api/premio")
+@RequestMapping("/api/premio")
 @CrossOrigin(origins = "*")
 @Tag(name = "Prêmio", description = "API para o gerenciamento de prêmios (Com Apagado Lógico)")
 public class PremioController {
