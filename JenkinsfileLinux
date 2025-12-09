@@ -19,12 +19,17 @@ pipeline {
 
                     // 2.1 Recupera o APK do pipeline do frontend (nome 'apk-artifact' é crucial)
                     // ATENÇÃO: Requer que o pipeline do Frontend tenha rodado primeiro!
-                    unstash 'apk-artifact'
+                    try {
+                        unstash 'apk-artifact'
 
-                    // 2.2 Move e RENOMEIA o APK (app-release.apk) REAL para a pasta estática,
-                    // sobrescrevendo o arquivo existente (ou placeholder).
-                    // O arquivo index.html já foi carregado no checkout.
-                    sh "mv app-release.apk src/main/resources/static/DahtApp.apk"
+                        // 2.2 Move e RENOMEIA o APK (app-release.apk) REAL para a pasta estática,
+                        // sobrescrevendo o arquivo existente (ou placeholder).
+                        // O arquivo index.html já foi carregado no checkout.
+                        sh "mv app-release.apk src/main/resources/static/DahtApp.apk"
+                    } catch (Exception e) {
+                        echo "⚠️ AVISO: Stash 'apk-artifact' não encontrado. O deploy seguirá sem a atualização do APK."
+                        echo "Erro detalhado: ${e.getMessage()}"
+                    }
                 }
             }
         }
