@@ -32,6 +32,8 @@ public class SecurityConfiguration {
             "/api/usuario/criar",
             "/api/usuario/login",
             "/index.html",
+            "/home",
+            "/",
 
             "/h2-console/**", // Adicionado wildcard para o h2
 
