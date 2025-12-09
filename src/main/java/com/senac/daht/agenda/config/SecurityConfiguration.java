@@ -24,119 +24,131 @@ import java.util.List;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfiguration {
-    @Autowired
-    private UserAuthenticationFilter userAuthenticationFilter;
+        @Autowired
+        private UserAuthenticationFilter userAuthenticationFilter;
 
-    public static final String [] ENDPOINTS_WITH_AUTHENTICATION_NOT_REQUIRED = {
-            //Usuário
-            "/api/usuario/criar",
-            "/api/usuario/login",
-            "/index.html",
-            "/home",
-            "/",
+        public static final String[] ENDPOINTS_WITH_AUTHENTICATION_NOT_REQUIRED = {
+                        // Usuário
+                        "/api/usuario/criar",
+                        "/api/usuario/login",
+                        "/index.html",
+                        "/home",
+                        "/",
 
-            "/h2-console/**", // Adicionado wildcard para o h2
+                        "/h2-console/**", // Adicionado wildcard para o h2
 
-            // 🔓 Swagger/OpenAPI UI
-            "/v3/api-docs/**",
-            "/swagger-ui/**",
-            "/swagger-ui.html"
-    };
+                        // 🔓 Swagger/OpenAPI UI
+                        "/v3/api-docs/**",
+                        "/swagger-ui/**",
+                        "/swagger-ui.html"
+        };
 
-    // Endpoints que requerem autenticação para serem acessados
-    public static final String [] ENDPOINTS_WITH_AUTHENTICATION_REQUIRED = {
+        // Endpoints que requerem autenticação para serem acessados
+        public static final String[] ENDPOINTS_WITH_AUTHENTICATION_REQUIRED = {
 
-            //Usuário
-            "/api/usuario/listar",
-            "/api/usuario/listarPorId/**",
-            "/api/usuario/atualizar/**",
-            "/api/usuario/deletar/**",
+                        // Usuário
+                        "/api/usuario/listar",
+                        "/api/usuario/listarPorId/**",
+                        "/api/usuario/atualizar/**",
+                        "/api/usuario/deletar/**",
 
-            //Personagem
-            "/api/personagem/listar",
-            "/api/personagem/listarPorId/**",
-            "/api/personagem/atualizar/**",
-            "/api/personagem/deletar/**",
-            "/api/personagem/criar",
+                        // Personagem
+                        "/api/personagem/listar",
+                        "/api/personagem/listarPorId/**",
+                        "/api/personagem/atualizar/**",
+                        "/api/personagem/deletar/**",
+                        "/api/personagem/criar",
 
-            //Missão
-            "/api/missao/listar",
-            "/api/missao/listarPorId/**",
-            "/api/missao/atualizar/**",
-            "/api/missao/deletar/**",
-            "/api/missao/criar",
+                        // Missão
+                        "/api/missao/listar",
+                        "/api/missao/listarPorId/**",
+                        "/api/missao/atualizar/**",
+                        "/api/missao/deletar/**",
+                        "/api/missao/criar",
 
-            //Ganho
-            "/api/ganho/listar",
-            "/api/ganho/listarPorId/**",
-            "/api/ganho/atualizar/**",
-            "/api/ganho/deletar/**",
-            "/api/ganho/criar",
+                        // Ganho
+                        "/api/ganho/listar",
+                        "/api/ganho/listarPorId/**",
+                        "/api/ganho/atualizar/**",
+                        "/api/ganho/deletar/**",
+                        "/api/ganho/criar",
 
-            //Prêmio
-            "/api/premio/listar",
-            "/api/premio/listarPorId/**",
-            "/api/premio/atualizar/**",
-            "/api/premio/deletar/**",
-            "/api/premio/criar",
+                        // Prêmio
+                        "/api/premio/listar",
+                        "/api/premio/listarPorId/**",
+                        "/api/premio/atualizar/**",
+                        "/api/premio/deletar/**",
+                        "/api/premio/criar",
 
-            //Tabela Prêmio
-            "/api/tabelapremio/listar",
-            "/api/tabelapremio/listarPorId/**",
-            "/api/tabelapremio/deletar/**",
-            "/api/tabelapremio/criar"
-    };
+                        // Tabela Prêmio
+                        "/api/tabelapremio/listar",
+                        "/api/tabelapremio/listarPorId/**",
+                        "/api/tabelapremio/deletar/**",
+                        "/api/tabelapremio/criar"
+        };
 
-    // Endpoints que só podem ser acessador por usuários com permissão de cliente
-    public static final String [] ENDPOINTS_CUSTOMER = {
-            "/usuario/test/customer"
-    };
+        // Endpoints que só podem ser acessador por usuários com permissão de cliente
+        public static final String[] ENDPOINTS_CUSTOMER = {
+                        "/usuario/test/customer"
+        };
 
-    // Endpoints que só podem ser acessador por usuários com permissão de administrador
-    public static final String [] ENDPOINTS_ADMIN = {
-            "/usuario/test/administrator"
-    };
+        // Endpoints que só podem ser acessador por usuários com permissão de
+        // administrador
+        public static final String[] ENDPOINTS_ADMIN = {
+                        "/usuario/test/administrator"
+        };
 
-    @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http
-                .csrf(AbstractHttpConfigurer::disable) // Nova sintaxe para desabilitar CSRF
-                .cors(cors -> cors.configurationSource(corsConfigurationSource())) // <--- ESSA LINHA FALTAVA: Ativa o CORS usando a configuração abaixo
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(ENDPOINTS_WITH_AUTHENTICATION_NOT_REQUIRED).permitAll()
-                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll() // Libera requisições OPTIONS (Preflight)
-                        .requestMatchers(ENDPOINTS_ADMIN).hasRole("ADMINISTRATOR")
-                        .requestMatchers(ENDPOINTS_CUSTOMER).hasRole("CUSTOMER")
-                        // .requestMatchers(ENDPOINTS_WITH_AUTHENTICATION_REQUIRED).authenticated() // Opcional se usar anyRequest().authenticated()
-                        .anyRequest().authenticated() // Qualquer outra rota exige autenticação
-                )
-                .addFilterBefore(userAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+        @Bean
+        public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+                http
+                                .csrf(AbstractHttpConfigurer::disable) // Nova sintaxe para desabilitar CSRF
+                                .cors(cors -> cors.configurationSource(corsConfigurationSource())) // <--- ESSA LINHA
+                                                                                                   // FALTAVA: Ativa o
+                                                                                                   // CORS usando a
+                                                                                                   // configuração
+                                                                                                   // abaixo
+                                .sessionManagement(session -> session
+                                                .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                                .authorizeHttpRequests(auth -> auth
+                                                .requestMatchers(ENDPOINTS_WITH_AUTHENTICATION_NOT_REQUIRED).permitAll()
+                                                .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll() // Libera
+                                                                                                        // requisições
+                                                                                                        // OPTIONS
+                                                                                                        // (Preflight)
+                                                .requestMatchers(ENDPOINTS_ADMIN).hasRole("ADMINISTRATOR")
+                                                .requestMatchers(ENDPOINTS_CUSTOMER).hasRole("CUSTOMER")
+                                                // .requestMatchers(ENDPOINTS_WITH_AUTHENTICATION_REQUIRED).authenticated()
+                                                // // Opcional se usar anyRequest().authenticated()
+                                                .anyRequest().authenticated() // Qualquer outra rota exige autenticação
+                                )
+                                .addFilterBefore(userAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
-        return http.build();
-    }
+                return http.build();
+        }
 
-    // --- CONFIGURAÇÃO GLOBAL DE CORS ---
-    @Bean
-    public CorsConfigurationSource corsConfigurationSource() {
-        CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of("*")); // LIBERA GERAL (Ótimo para dev)
-        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS", "HEAD", "TRACE", "CONNECT"));
-        configuration.setAllowedHeaders(List.of("*"));
+        // --- CONFIGURAÇÃO GLOBAL DE CORS ---
+        @Bean
+        public CorsConfigurationSource corsConfigurationSource() {
+                CorsConfiguration configuration = new CorsConfiguration();
+                configuration.setAllowedOrigins(List.of("*")); // LIBERA GERAL (Ótimo para dev)
+                configuration.setAllowedMethods(
+                                Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS", "HEAD", "TRACE", "CONNECT"));
+                configuration.setAllowedHeaders(List.of("*"));
 
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", configuration);
-        return source;
-    }
-    // -----------------------------------
+                UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+                source.registerCorsConfiguration("/**", configuration);
+                return source;
+        }
+        // -----------------------------------
 
-    @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
-        return authenticationConfiguration.getAuthenticationManager();
-    }
+        @Bean
+        public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration)
+                        throws Exception {
+                return authenticationConfiguration.getAuthenticationManager();
+        }
 
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
+        @Bean
+        public PasswordEncoder passwordEncoder() {
+                return new BCryptPasswordEncoder();
+        }
 }
