@@ -11,8 +11,8 @@ public class WebConfig implements WebMvcConfigurer {
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**") // Aplica a todas as rotas
                 .allowedOrigins(
-                        "http://localhost:8081",             // Para desenvolvimento no navegador/web
-                        "http://academico3.rj.senac.br"      // Origem do servidor (pode ser redundante, mas seguro)
+                        "http://localhost:8080", // Para desenvolvimento no navegador/web
+                        "http://academico3.rj.senac.br" // Origem do servidor (pode ser redundante, mas seguro)
                 )
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                 .allowedHeaders("*"); // Permite cabeçalhos customizados, como o 'Authorization'

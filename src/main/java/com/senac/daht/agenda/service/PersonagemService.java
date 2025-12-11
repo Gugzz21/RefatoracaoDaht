@@ -36,11 +36,6 @@ public class PersonagemService {
         response.setNivel(personagem.getNivel());
         response.setStatus(personagem.getStatus());
 
-        // Mapeando os itens visuais para o Frontend
-        response.setMolduraId(personagem.getMolduraId());
-        response.setCabecaId(personagem.getCabecaId());
-        response.setMaoId(personagem.getMaoId());
-
         if (personagem.getUsuario() != null) {
             response.setUsuarioId(personagem.getUsuario().getId());
             response.setNomeUsuario(personagem.getUsuario().getNome());
@@ -57,18 +52,14 @@ public class PersonagemService {
         personagem.setNivel(request.getNivel());
         personagem.setStatus(request.getStatus());
 
-        // Mapeando na criação (caso venha preenchido)
-        personagem.setMolduraId(request.getMolduraId());
-        personagem.setCabecaId(request.getCabecaId());
-        personagem.setMaoId(request.getMaoId());
-
         return personagem;
     }
 
     @Transactional
     public PersonagemDTOResponse criarPersonagem(PersonagemDTORequest request) {
         Usuario usuario = usuarioRepository.findById(request.getUsuarioId())
-                .orElseThrow(() -> new EntityNotFoundException("Usuário ativo com ID " + request.getUsuarioId() + " não encontrado."));
+                .orElseThrow(() -> new EntityNotFoundException(
+                        "Usuário ativo com ID " + request.getUsuarioId() + " não encontrado."));
 
         Personagem personagem = convertToEntity(request);
         personagem.setUsuario(usuario);
@@ -104,16 +95,10 @@ public class PersonagemService {
         personagem.setNivel(request.getNivel());
         personagem.setStatus(request.getStatus());
 
-        // --- ATUALIZAÇÃO DOS ITENS VISUAIS ---
-        // Permite equipar/desequipar itens salvando no banco
-        personagem.setMolduraId(request.getMolduraId());
-        personagem.setCabecaId(request.getCabecaId());
-        personagem.setMaoId(request.getMaoId());
-        // -------------------------------------
-
         if (request.getUsuarioId() != null && !personagem.getUsuario().getId().equals(request.getUsuarioId())) {
             Usuario usuario = usuarioRepository.findById(request.getUsuarioId())
-                    .orElseThrow(() -> new EntityNotFoundException("Usuário ativo com ID " + request.getUsuarioId() + " não encontrado."));
+                    .orElseThrow(() -> new EntityNotFoundException(
+                            "Usuário ativo com ID " + request.getUsuarioId() + " não encontrado."));
             personagem.setUsuario(usuario);
         }
 

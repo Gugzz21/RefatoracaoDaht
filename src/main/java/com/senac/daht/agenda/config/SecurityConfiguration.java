@@ -34,7 +34,6 @@ public class SecurityConfiguration {
 
                         // Página HTML
                         "/",
-                        "/index.html",
                         "/install",
                         "/qrcode.jpg",
 
