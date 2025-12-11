@@ -28,15 +28,12 @@ public class SecurityConfiguration {
         private UserAuthenticationFilter userAuthenticationFilter;
 
         public static final String[] ENDPOINTS_WITH_AUTHENTICATION_NOT_REQUIRED = {
+                        // Debug
+                        "/api/usuario/debug",
+
                         // Usuário
                         "/api/usuario/criar",
                         "/api/usuario/login",
-
-                        // Página HTML
-
-                        "/",
-                        "/install",
-                        "/qrcode.jpg",
 
                         "/h2-console/**", // Adicionado wildcard para o h2
 
@@ -57,7 +54,7 @@ public class SecurityConfiguration {
 
                         // Personagem
                         "/api/personagem/listar",
-                        "/api/personagem/listarPorId/**",                       
+                        "/api/personagem/listarPorId/**",
                         "/api/personagem/atualizar/**",
                         "/api/personagem/deletar/**",
                         "/api/personagem/criar",

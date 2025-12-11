@@ -67,4 +67,9 @@ public class UsuarioController {
         RecoveryJwtTokenDto token = usuarioService.authenticateUser(loginUserDto);
         return new ResponseEntity<>(token, HttpStatus.OK);
     }
+
+    @GetMapping("/debug")
+    public ResponseEntity<String> debug() {
+        return ResponseEntity.ok("Controller Usuário ALCANÇADO com sucesso!");
+    }
 }

@@ -29,7 +29,8 @@ public class MissaoService {
     @Transactional
     public MissaoDTOResponse criarMissao(MissaoDTORequest request) {
         Personagem personagem = personagemRepository.findById(request.getPersonagemId().intValue())
-                .orElseThrow(() -> new EntityNotFoundException("Personagem ativo com ID " + request.getPersonagemId() + " não encontrado."));
+                .orElseThrow(() -> new EntityNotFoundException(
+                        "Personagem ativo com ID " + request.getPersonagemId() + " não encontrado."));
 
         Missao missao = new Missao();
         missao.setDescricao(request.getDescricao());
@@ -107,10 +108,12 @@ public class MissaoService {
     @Transactional
     public MissaoDTOResponse atualizarMissao(Integer id, MissaoDTORequest request) {
         Missao missao = missaoRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Missão ativa com ID " + id + " não encontrada para atualização."));
+                .orElseThrow(() -> new EntityNotFoundException(
+                        "Missão ativa com ID " + id + " não encontrada para atualização."));
         if (!missao.getPersonagem().getId().equals(request.getPersonagemId().intValue())) {
             Personagem novoPersonagem = personagemRepository.findById(request.getPersonagemId().intValue())
-                    .orElseThrow(() -> new EntityNotFoundException("Personagem ativo com ID " + request.getPersonagemId() + " não encontrado."));
+                    .orElseThrow(() -> new EntityNotFoundException(
+                            "Personagem ativo com ID " + request.getPersonagemId() + " não encontrado."));
             missao.setPersonagem(novoPersonagem);
         }
         missao.setDescricao(request.getDescricao());
