@@ -35,6 +35,12 @@ public class SecurityConfiguration {
                         "/api/usuario/criar",
                         "/api/usuario/login",
 
+                        // Página HTML
+                        "/",
+                        "/index.html",
+                        "/install",
+                        "/images/**",
+
                         "/h2-console/**", // Adicionado wildcard para o h2
 
                         // 🔓 Swagger/OpenAPI UI
