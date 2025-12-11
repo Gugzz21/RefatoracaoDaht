@@ -12,7 +12,7 @@
             line-height: 1.6;
             margin: 0;
             padding: 0;
-            background-color: #e8f5e9; /* Fundo mais suave */
+            background-color: #e8f5e9;
             color: #333;
         }
 
@@ -20,9 +20,9 @@
         header {
             background-color: #4CAF50;
             color: white;
-            padding: 30px 0; /* Maior preenchimento */
+            padding: 30px 0;
             text-align: center;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra para profundidade */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
 
         header h1 {
@@ -38,7 +38,7 @@
 
         /* Container Principal */
         .container {
-            width: 90%; /* Mais largura em telas maiores */
+            width: 90%;
             max-width: 1100px;
             margin: auto;
             overflow: hidden;
@@ -56,7 +56,7 @@
 
         h2 {
             color: #38761d;
-            border-bottom: 3px solid #6aa84f; /* Borda mais destacada */
+            border-bottom: 3px solid #6aa84f;
             padding-bottom: 12px;
             margin-top: 0;
             font-size: 2em;
@@ -64,12 +64,12 @@
 
         /* Listas */
         ul {
-            list-style-type: none; /* Remove o marcador de disco padrão */
+            list-style-type: none;
             padding-left: 0;
         }
 
         ul li {
-            background: #f1f8e9; /* Fundo leve para itens de lista */
+            background: #f1f8e9;
             margin-bottom: 10px;
             padding: 15px;
             border-left: 5px solid #4CAF50;
@@ -85,7 +85,7 @@
         }
 
         .app-feature {
-            flex: 1; /* Distribui o espaço uniformemente */
+            flex: 1;
             padding: 20px;
             border: 1px solid #ccc;
             border-radius: 8px;
@@ -94,7 +94,7 @@
         }
 
         .app-feature:hover {
-            transform: translateY(-5px); /* Efeito ao passar o mouse */
+            transform: translateY(-5px);
         }
 
         .app-feature h3 {
@@ -138,10 +138,24 @@
             text-align: center;
             margin-top: 30px;
             padding: 20px;
-            background-color: #dcedc8; /* Cor de destaque */
+            background-color: #dcedc8;
             border-radius: 8px;
             font-size: 1.1em;
             font-weight: bold;
+        }
+
+        /* Seção de Precificação */
+        #precificacao {
+            background-color: #fff9c4; /* Cor de destaque para informações financeiras */
+            border: 2px solid #ffcc00;
+            text-align: center;
+        }
+
+        #precificacao strong {
+            color: #d85000;
+            font-size: 2.5em;
+            display: block;
+            margin: 10px 0;
         }
 
         /* Rodapé */
@@ -168,7 +182,7 @@
             }
 
             #personalizacao-recompensas .features-grid {
-                flex-direction: column; /* Empilha colunas em telas menores */
+                flex-direction: column;
             }
         }
     </style>
@@ -202,6 +216,13 @@
                 <a href="#" class="download-button" target="_blank">Baixe o DAHT Agora!</a>
                 <p style="margin-top: 10px; font-size: 0.9em; color: #666;">Aponte a câmera para o QR Code acima ou clique no botão.</p>
             </div>
+        </section>
+
+        <section id="precificacao">
+            <h2>💵 Valor Estimado do Projeto (Contrato)</h2>
+            <p>Com base em um projeto de **6 meses** executado por um **Desenvolvedor Júnior** no modelo de contratação/serviço, o valor estimado de custo de mão de obra e desenvolvimento é de:</p>
+            <strong>R$ 31.200,00</strong>
+            <p style="font-size: 0.9em; color: #777;">*Esta estimativa reflete o custo direto do trabalho, incluindo uma margem básica para gestão e encargos. O valor pode variar conforme a complexidade exata do backend e a tecnologia utilizada.</p>
         </section>
 
         <section id="missoes">
