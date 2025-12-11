@@ -6,19 +6,28 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DAHT: Gamifique Seus Hábitos</title>
     <style>
+        /* Variáveis de Cores Otimizadas */
+        :root {
+            --primary-orange: #FF9800; /* Laranja Principal */
+            --secondary-dark-orange: #f57c00; /* Laranja Escuro (Hover) */
+            --contrast-blue: #1976D2; /* Azul para Contraste e Títulos */
+            --light-yellow: #fff9c4; /* Fundo de Alerta/Preço */
+            --background-color: #fff3e0; /* Fundo Laranja Muito Claro */
+        }
+
         /* Estilos Globais */
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             line-height: 1.6;
             margin: 0;
             padding: 0;
-            background-color: #e8f5e9;
+            background-color: var(--background-color);
             color: #333;
         }
 
         /* Cabeçalho */
         header {
-            background-color: #4CAF50;
+            background-color: var(--primary-orange);
             color: white;
             padding: 30px 0;
             text-align: center;
@@ -55,8 +64,8 @@
         }
 
         h2 {
-            color: #38761d;
-            border-bottom: 3px solid #6aa84f;
+            color: var(--contrast-blue); /* Títulos em Azul Escuro */
+            border-bottom: 3px solid var(--primary-orange);
             padding-bottom: 12px;
             margin-top: 0;
             font-size: 2em;
@@ -69,10 +78,10 @@
         }
 
         ul li {
-            background: #f1f8e9;
+            background: #fcf8f3; 
             margin-bottom: 10px;
             padding: 15px;
-            border-left: 5px solid #4CAF50;
+            border-left: 5px solid var(--primary-orange); /* Destaque em Laranja */
             border-radius: 4px;
         }
 
@@ -95,10 +104,11 @@
 
         .app-feature:hover {
             transform: translateY(-5px);
+            box-shadow: 0 4px 8px rgba(255, 152, 0, 0.2);
         }
 
         .app-feature h3 {
-            color: #4CAF50;
+            color: var(--secondary-dark-orange);
             margin-top: 0;
         }
 
@@ -112,14 +122,15 @@
             max-width: 250px;
             height: auto;
             margin: 20px auto;
-            border: 5px solid #4CAF50;
+            border: 5px solid var(--primary-orange);
             border-radius: 15px;
             display: block;
         }
 
+        /* Botão de Download */
         .download-button {
             display: inline-block;
-            background-color: #4CAF50;
+            background-color: var(--primary-orange);
             color: white;
             padding: 15px 30px;
             text-decoration: none;
@@ -130,7 +141,7 @@
         }
 
         .download-button:hover {
-            background-color: #38761d;
+            background-color: var(--secondary-dark-orange);
         }
 
         /* Informações do Desenvolvedor */
@@ -138,24 +149,30 @@
             text-align: center;
             margin-top: 30px;
             padding: 20px;
-            background-color: #dcedc8;
+            background-color: #ffccbc; /* Tom de pêssego suave */
             border-radius: 8px;
             font-size: 1.1em;
             font-weight: bold;
         }
 
-        /* Seção de Precificação */
-        #precificacao {
-            background-color: #fff9c4; /* Cor de destaque para informações financeiras */
+        /* Seção de Precificação e Manutenção */
+        #precificacao, #manutencao {
+            background-color: var(--light-yellow); /* Amarelo claro para destaque financeiro */
             border: 2px solid #ffcc00;
             text-align: center;
+            margin-top: 30px;
         }
 
-        #precificacao strong {
-            color: #d85000;
+        #precificacao strong, #manutencao strong {
+            color: var(--contrast-blue); /* Valor em Azul Escuro */
             font-size: 2.5em;
             display: block;
             margin: 10px 0;
+        }
+        
+        #manutencao h2 {
+            color: var(--secondary-dark-orange); /* Título de manutenção em Laranja Escuro */
+            border-bottom-color: var(--contrast-blue);
         }
 
         /* Rodapé */
@@ -172,15 +189,9 @@
             .container {
                 width: 95%;
             }
-
             header h1 {
                 font-size: 2em;
             }
-
-            .qr-code-section img {
-                max-width: 180px;
-            }
-
             #personalizacao-recompensas .features-grid {
                 flex-direction: column;
             }
@@ -213,16 +224,30 @@
 
                 <img src="/images/codigoqr.png" alt="QR Code para baixar o Aplicativo DAHT">
 
-                <a href="#" class="download-button" target="_blank">Baixe o DAHT Agora!</a>
+                <a href="https://expo.dev/accounts/gugzz21/projects/daht/builds/af2df121-9d14-4274-8e31-6b2f709228c2" class="download-button" target="_blank">Baixe o DAHT Agora!</a>
                 <p style="margin-top: 10px; font-size: 0.9em; color: #666;">Aponte a câmera para o QR Code acima ou clique no botão.</p>
             </div>
         </section>
 
         <section id="precificacao">
-            <h2>💵 Valor Estimado do Projeto (Contrato)</h2>
+            <h2>💵 Valor Estimado do Projeto (Desenvolvimento)</h2>
             <p>Com base em um projeto de **6 meses** executado por um **Desenvolvedor Júnior** no modelo de contratação/serviço, o valor estimado de custo de mão de obra e desenvolvimento é de:</p>
             <strong>R$ 31.200,00</strong>
-            <p style="font-size: 0.9em; color: #777;">*Esta estimativa reflete o custo direto do trabalho, incluindo uma margem básica para gestão e encargos. O valor pode variar conforme a complexidade exata do backend e a tecnologia utilizada.</p>
+            <p style="font-size: 0.9em; color: #777;">*Esta estimativa reflete o custo direto do trabalho, incluindo uma margem básica para gestão e encargos. </p>
+        </section>
+        
+        <section id="manutencao">
+            <h2>🛠️ Custo de Manutenção e Hospedagem (Pós-Desenvolvimento)</h2>
+            <p>Após a conclusão do desenvolvimento, o projeto incorrerá em custos operacionais e de manutenção para garantir o funcionamento contínuo e a escalabilidade do serviço, que incluem:</p>
+            
+            <ul>
+                <li>**Hospedagem e Servidores (Cloud/AWS/GCP):** Custo de manter o backend e o banco de dados ativos.</li>
+                <li>**Manutenção e Suporte Contínuo:** Correção de bugs, atualizações de segurança e pequenas melhorias de funcionalidade (mão de obra mensal).</li>
+            </ul>
+
+            <p>A estimativa de custo mensal mínimo para manter um MVP (Produto Mínimo Viável) no ar, com suporte de um desenvolvedor em tempo parcial, está entre:</p>
+            <strong>R$ 500,00 - R$ 2.500,00/mês</strong>
+            <p style="font-size: 0.9em; color: #777;">*Os valores variam drasticamente dependendo do volume de usuários e da complexidade da infraestrutura de backend necessária (serviços de terceiros, monitoramento, etc.).</p>
         </section>
 
         <section id="missoes">
