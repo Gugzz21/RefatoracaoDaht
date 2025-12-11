@@ -27,7 +27,7 @@ public class Missao {
 
     @Column(name = "missao_datafinalizacao")
     private LocalDate dataFinalizacao;
-
+    
     @Column(name = "missao_datainicio")
     private LocalDate dataInicio;
 
@@ -37,25 +37,75 @@ public class Missao {
     @JoinColumn(name = "personagem_id", nullable = false)
     private Personagem personagem;
 
+    public Integer getId() {
+        return id;
+    }
 
-    public Integer getId() { return id; }
-    public void setId(Integer id) { this.id = id; }
-    public String getDescricao() { return descricao; }
-    public void setDescricao(String descricao) { this.descricao = descricao; }
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
-    public Integer getRepeticao() { return repeticao; }
-    public void setRepeticao(Integer repeticao) { this.repeticao = repeticao; }
+    public String getDescricao() {
+        return descricao;
+    }
 
-    public Integer getDificuldade() { return dificuldade; }
-    public void setDificuldade(Integer dificuldade) { this.dificuldade = dificuldade; }
-    public Integer getEfeito() { return efeito; }
-    public void setEfeito(Integer efeito) { this.efeito = efeito; }
-    public LocalDate getDataFinalizacao() { return dataFinalizacao; }
-    public void setDataFinalizacao(LocalDate dataFinalizacao) { this.dataFinalizacao = dataFinalizacao; }
-    public LocalDate getDataInicio() { return dataInicio; }
-    public void setDataInicio(LocalDate dataInicio) { this.dataInicio = dataInicio; }
-    public Integer getStatus() { return status; }
-    public void setStatus(Integer status) { this.status = status; }
-    public Personagem getPersonagem() { return personagem; }
-    public void setPersonagem(Personagem personagem) { this.personagem = personagem; }
+    public void setDescricao(String descricao) {
+        this.descricao = descricao;
+    }
+
+    public Integer getRepeticao() {
+        return repeticao;
+    }
+
+    public void setRepeticao(Integer repeticao) {
+        this.repeticao = repeticao;
+    }
+
+    public Integer getDificuldade() {
+        return dificuldade;
+    }
+
+    public void setDificuldade(Integer dificuldade) {
+        this.dificuldade = dificuldade;
+    }
+
+    public Integer getEfeito() {
+        return efeito;
+    }
+
+    public void setEfeito(Integer efeito) {
+        this.efeito = efeito;
+    }
+
+    public LocalDate getDataFinalizacao() {
+        return dataFinalizacao;
+    }
+
+    public void setDataFinalizacao(LocalDate dataFinalizacao) {
+        this.dataFinalizacao = dataFinalizacao;
+    }
+
+    public LocalDate getDataInicio() {
+        return dataInicio;
+    }
+
+    public void setDataInicio(LocalDate dataInicio) {
+        this.dataInicio = dataInicio;
+    }
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
+    }
+
+    public Personagem getPersonagem() {
+        return personagem;
+    }
+
+    public void setPersonagem(Personagem personagem) {
+        this.personagem = personagem;
+    }
 }

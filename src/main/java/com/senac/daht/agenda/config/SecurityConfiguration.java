@@ -33,6 +33,7 @@ public class SecurityConfiguration {
                         "/api/usuario/login",
 
                         // Página HTML
+
                         "/",
                         "/install",
                         "/qrcode.jpg",
@@ -56,7 +57,7 @@ public class SecurityConfiguration {
 
                         // Personagem
                         "/api/personagem/listar",
-                        "/api/personagem/listarPorId/**",
+                        "/api/personagem/listarPorId/**",                       
                         "/api/personagem/atualizar/**",
                         "/api/personagem/deletar/**",
                         "/api/personagem/criar",
