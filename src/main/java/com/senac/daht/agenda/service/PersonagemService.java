@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -35,6 +36,11 @@ public class PersonagemService {
         response.setXp(personagem.getXp());
         response.setNivel(personagem.getNivel());
         response.setStatus(personagem.getStatus());
+
+        // Fix #4: mapeia os itens equipados para o DTO
+        response.setMolduraId(personagem.getMolduraId());
+        response.setCabecaId(personagem.getCabecaId());
+        response.setMaoId(personagem.getMaoId());
 
         if (personagem.getUsuario() != null) {
             response.setUsuarioId(personagem.getUsuario().getId());
@@ -95,7 +101,14 @@ public class PersonagemService {
         personagem.setNivel(request.getNivel());
         personagem.setStatus(request.getStatus());
 
-        if (request.getUsuarioId() != null && !personagem.getUsuario().getId().equals(request.getUsuarioId())) {
+        // Fix #4: persiste os itens equipados
+        personagem.setMolduraId(request.getMolduraId());
+        personagem.setCabecaId(request.getCabecaId());
+        personagem.setMaoId(request.getMaoId());
+
+        // Fix #11: usa Objects.equals para comparação segura (null-safe e sem casting de Long/Integer)
+        if (request.getUsuarioId() != null &&
+                !Objects.equals(personagem.getUsuario().getId(), request.getUsuarioId())) {
             Usuario usuario = usuarioRepository.findById(request.getUsuarioId())
                     .orElseThrow(() -> new EntityNotFoundException(
                             "Usuário ativo com ID " + request.getUsuarioId() + " não encontrado."));

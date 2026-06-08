@@ -18,12 +18,22 @@ public interface MissaoRepository extends JpaRepository<Missao, Integer> {
     @Query("UPDATE Missao m SET m.status = -1 WHERE m.id = :id")
     void apagarLogico(@Param("id") Integer id);
 
+    /**
+     * Retorna apenas missões ativas (status=1).
+     * Fix #5: era status >= 0, que incluía concluídas (status=2) desnecessariamente.
+     */
+    @Query("SELECT m FROM Missao m WHERE m.status = 1")
+    List<Missao> listarAtivas();
 
-    @Query("SELECT m FROM Missao m WHERE m.status >= 0")
-    List<Missao> listarAtivos();
+    /**
+     * Retorna apenas missões realizadas/concluídas (status=2).
+     */
+    @Query("SELECT m FROM Missao m WHERE m.status = 2")
+    List<Missao> listarRealizadas();
 
     @Query("SELECT m FROM Missao m WHERE m.id = :id AND m.status >= 0")
     Optional<Missao> findById(@Param("id") Integer id);
+
     @Query("SELECT m FROM Missao m WHERE m.personagem.id = :personagemId AND m.status >= 0")
     List<Missao> findByPersonagemIdAtivo(@Param("personagemId") Integer personagemId);
 }

@@ -3,6 +3,7 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Past;
+import jakarta.validation.constraints.Size;
 import org.springframework.format.annotation.DateTimeFormat;
 import java.sql.Date;
 import java.time.LocalDate;
@@ -11,15 +12,16 @@ public class UsuarioDTORequest {
 
     private String nome;
 
-
     private String email;
 
     private String telefone;
 
     private LocalDate dataNascimento;
 
-
+    // Fix #8: mínimo de 8 caracteres como segunda linha de defesa (frontend também valida)
+    @Size(min = 8, message = "A senha deve ter no mínimo 8 caracteres.")
     private String senha;
+
 
     private Integer status;
 

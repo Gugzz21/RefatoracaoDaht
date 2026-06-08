@@ -147,7 +147,29 @@ public class UsuarioService {
 
         UsuarioDetailsImpl userDetails = (UsuarioDetailsImpl) authentication.getPrincipal();
 
-        return new RecoveryJwtTokenDto(jwtTokenService.generateToken(userDetails));
+        // Busca o usuário para incluir IDs no payload — elimina a necessidade do cliente
+        // chamar /api/usuario/listar só para descobrir o próprio ID.
+        Usuario usuario = usuarioRepository.findByEmail(loginUserDto.email())
+                .orElseThrow(() -> new EntityNotFoundException("Usuário não encontrado após autenticação."));
+
+        Integer personagemId = (usuario.getPersonagem() != null) ? usuario.getPersonagem().getId() : null;
+
+        return new RecoveryJwtTokenDto(
+                jwtTokenService.generateToken(userDetails),
+                usuario.getId(),
+                personagemId
+        );
+    }
+
+    /**
+     * Retorna os dados do usuário identificado pelo e-mail extraído do JWT.
+     * Usado pelo endpoint GET /api/usuario/me.
+     */
+    @Transactional(readOnly = true)
+    public UsuarioDTOResponse buscarPorEmail(String email) {
+        Usuario usuario = usuarioRepository.findByEmail(email)
+                .orElseThrow(() -> new EntityNotFoundException("Usuário não encontrado."));
+        return convertToDto(usuario);
     }
 
     public void createUser(CreateUserDto createUserDto) {

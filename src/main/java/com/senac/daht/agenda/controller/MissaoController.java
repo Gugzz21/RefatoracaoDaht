@@ -25,10 +25,17 @@ public class MissaoController {
     }
 
     @GetMapping("/listar")
-    @Operation(summary = "Listar missões ativas", description = "Retorna todos os registros de missões que não foram deletadas logicamente.")
+    @Operation(summary = "Listar missões ativas", description = "Retorna apenas missões com status=1 (ativas).")
     public ResponseEntity<List<MissaoDTOResponse>> listarMissoes() {
         return ResponseEntity.ok(missaoService.listarMissoes());
     }
+
+    @GetMapping("/listarRealizadas")
+    @Operation(summary = "Listar missões realizadas", description = "Retorna apenas missões com status=2 (concluídas).")
+    public ResponseEntity<List<MissaoDTOResponse>> listarMissoesRealizadas() {
+        return ResponseEntity.ok(missaoService.listarMissoesRealizadas());
+    }
+
 
     @GetMapping("/listarPorId/{id}")
     @Operation(summary = "Listar missão ativa por ID", description = "Busca uma missão pelo seu ID, retornando apenas se estiver ativa.")

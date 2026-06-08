@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -65,14 +66,36 @@ public class MissaoService {
 
     @Transactional(readOnly = true)
     public List<MissaoDTOResponse> listarMissoes() {
-        return missaoRepository.listarAtivos().stream()
+        // Fix #5: usa listarAtivas() (status=1) em vez de status>=0, eliminando missoes concluidas da listagem principal
+        return missaoRepository.listarAtivas().stream()
                 .map(missao -> {
                     MissaoDTOResponse response = new MissaoDTOResponse();
                     response.setId(missao.getId());
                     response.setDescricao(missao.getDescricao());
                     response.setRepeticao(missao.getRepeticao());
                     response.setDificuldade(missao.getDificuldade());
-                    // IMPORTANT: Sending the effect back to the frontend
+                    response.setEfeito(missao.getEfeito());
+                    response.setDataFinalizacao(missao.getDataFinalizacao());
+                    response.setDataInicio(missao.getDataInicio());
+                    response.setStatus(missao.getStatus());
+                    if (missao.getPersonagem() != null) {
+                        response.setPersonagemId(missao.getPersonagem().getId().longValue());
+                    }
+                    return response;
+                })
+                .collect(Collectors.toList());
+    }
+
+    @Transactional(readOnly = true)
+    public List<MissaoDTOResponse> listarMissoesRealizadas() {
+        // Fix #5: endpoint separado para missões concluídas (status=2)
+        return missaoRepository.listarRealizadas().stream()
+                .map(missao -> {
+                    MissaoDTOResponse response = new MissaoDTOResponse();
+                    response.setId(missao.getId());
+                    response.setDescricao(missao.getDescricao());
+                    response.setRepeticao(missao.getRepeticao());
+                    response.setDificuldade(missao.getDificuldade());
                     response.setEfeito(missao.getEfeito());
                     response.setDataFinalizacao(missao.getDataFinalizacao());
                     response.setDataInicio(missao.getDataInicio());
@@ -110,7 +133,12 @@ public class MissaoService {
         Missao missao = missaoRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException(
                         "Missão ativa com ID " + id + " não encontrada para atualização."));
-        if (!missao.getPersonagem().getId().equals(request.getPersonagemId().intValue())) {
+
+        // Fix #11: Objects.equals é null-safe e evita casting entre Long e Integer
+        if (!Objects.equals(missao.getPersonagem().getId(), request.getPersonagemId() != null ? request.getPersonagemId().intValue() : null)) {
+            if (request.getPersonagemId() == null) {
+                throw new EntityNotFoundException("personagemId não pode ser nulo ao atualizar uma missão.");
+            }
             Personagem novoPersonagem = personagemRepository.findById(request.getPersonagemId().intValue())
                     .orElseThrow(() -> new EntityNotFoundException(
                             "Personagem ativo com ID " + request.getPersonagemId() + " não encontrado."));

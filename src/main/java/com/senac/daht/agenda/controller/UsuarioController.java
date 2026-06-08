@@ -10,6 +10,8 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -30,6 +32,17 @@ public class UsuarioController {
     @Operation(summary = "Listar usuários ativos", description = "Retorna todos os registros de usuários que não foram deletados logicamente.")
     public ResponseEntity<List<UsuarioDTOResponse>> listarUsuarios() {
         return ResponseEntity.ok(usuarioService.listarAtivos());
+    }
+
+    /**
+     * Retorna apenas os dados do usuário autenticado (extraído do JWT).
+     * Elimina a necessidade de listar todos os usuários para achar o próprio ID.
+     */
+    @GetMapping("/me")
+    @Operation(summary = "Dados do usuário autenticado", description = "Retorna os dados do usuário logado com base no token JWT.")
+    public ResponseEntity<UsuarioDTOResponse> getMe(@AuthenticationPrincipal UserDetails userDetails) {
+        UsuarioDTOResponse usuario = usuarioService.buscarPorEmail(userDetails.getUsername());
+        return ResponseEntity.ok(usuario);
     }
 
     @GetMapping("/listarPorId/{id}")

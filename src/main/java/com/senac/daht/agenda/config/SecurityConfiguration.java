@@ -53,6 +53,7 @@ public class SecurityConfiguration {
         public static final String[] ENDPOINTS_WITH_AUTHENTICATION_REQUIRED = {
 
                         // Usuário
+                        "/api/usuario/me",
                         "/api/usuario/listar",
                         "/api/usuario/listarPorId/**",
                         "/api/usuario/atualizar/**",
@@ -136,7 +137,11 @@ public class SecurityConfiguration {
         @Bean
         public CorsConfigurationSource corsConfigurationSource() {
                 CorsConfiguration configuration = new CorsConfiguration();
-                configuration.setAllowedOrigins(List.of("*")); // LIBERA GERAL (Ótimo para dev)
+                // Fix #6: allowedOrigins("*") é incompatível com credenciais.
+                // allowedOriginPatterns("*") funciona corretamente em dev.
+                // ATENÇÃO: Substituir "*" pelos domínios específicos antes do deploy em produção.
+                // Exemplo: configuration.setAllowedOriginPatterns(List.of("https://app.seudominio.com.br"));
+                configuration.setAllowedOriginPatterns(List.of("*"));
                 configuration.setAllowedMethods(
                                 Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS", "HEAD", "TRACE", "CONNECT"));
                 configuration.setAllowedHeaders(List.of("*"));
@@ -146,6 +151,7 @@ public class SecurityConfiguration {
                 return source;
         }
         // -----------------------------------
+
 
         @Bean
         public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration)

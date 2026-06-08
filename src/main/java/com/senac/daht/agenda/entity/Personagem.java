@@ -30,6 +30,16 @@ public class Personagem {
     @Column(name = "personagem_status")
     private Integer status;
 
+    // Itens equipados pelo personagem — persistidos no banco de dados
+    @Column(name = "personagem_moldura_id")
+    private Integer molduraId;
+
+    @Column(name = "personagem_cabeca_id")
+    private Integer cabecaId;
+
+    @Column(name = "personagem_mao_id")
+    private Integer maoId;
+
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "usuario_id", referencedColumnName = "usuario_id", nullable = false)
     private Usuario usuario;
@@ -39,6 +49,7 @@ public class Personagem {
     private List<Missao> missoes;
     @OneToMany(mappedBy = "personagem", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<TabelaPremio> premiosConquistados;
+
 
     public Integer getId() {
         return id;
@@ -127,4 +138,13 @@ public class Personagem {
     public void setPremiosConquistados(List<TabelaPremio> premiosConquistados) {
         this.premiosConquistados = premiosConquistados;
     }
+
+    public Integer getMolduraId() { return molduraId; }
+    public void setMolduraId(Integer molduraId) { this.molduraId = molduraId; }
+
+    public Integer getCabecaId() { return cabecaId; }
+    public void setCabecaId(Integer cabecaId) { this.cabecaId = cabecaId; }
+
+    public Integer getMaoId() { return maoId; }
+    public void setMaoId(Integer maoId) { this.maoId = maoId; }
 }
